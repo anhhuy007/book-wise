@@ -23,20 +23,20 @@ function LayoutContent({ children }) {
   const { expanded } = useSideNav();
 
   return (
-    <div className="flex">
-      <div className="flex-none">
-        <SideNav />
+    <div className="flex flex-col max-w-screen-2xl">
+      <div className="h-24 flex-none sticky top-0 z-40 bg-background">
+        <TopNav />
+        <Separator />
       </div>
-      <div
-        className={`flex flex-col flex-1 transition-all duration-300 ${
-          expanded ? "ml-64" : "ml-20"
-        }`}
-      >
-        <div className="h-24 flex-none sticky top-0 z-40 bg-background">
-          <TopNav />
-          <Separator />
+      <div className="flex flex-row-ml-0 float-left">
+        <SideNav />
+        <div
+          className={`flex flex-row flex-1 transition-all duration-300 ${
+            expanded ? "ml-64" : "ml-20"
+          }`}
+        >
+          <main className="flex-1 p-6">{children}</main>
         </div>
-        <main className="flex-1 p-6">{children}</main>
       </div>
     </div>
   );

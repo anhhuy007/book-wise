@@ -7,8 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import ShineBorder from "../ui/shine-border";
-// import { useEffect, useState } from "react";
+import { ArrowRightToLine, Search } from "lucide-react";
 
 function SearchBar({ onSearchTypeChange }) {
   const handleChangeSearchType = (value) => {
@@ -17,9 +16,18 @@ function SearchBar({ onSearchTypeChange }) {
 
   return (
     <div className="relative group ">
-      {/* <ShineBorder className=" transition-all duration-300 group-hover:scale-105"> */}
       <div className="flex items-center p-6 space-x-5 rounded-xl transform transition duration-300">
-        <div className="flex bg-accent flex-1 p-5 space-x-4 rounded-lg">
+        <Select onValueChange={handleChangeSearchType}>
+          <SelectTrigger className="w-[150px]">
+            <SelectValue placeholder="Tìm theo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="book">Tên sách</SelectItem>
+            <SelectItem value="auth">Tác giả</SelectItem>
+            <SelectItem value="pub">Nhà xuất bản</SelectItem>
+          </SelectContent>
+        </Select>
+        <div className="flex bg-accent p-3 space-x-4 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 opacity-30"
@@ -40,22 +48,10 @@ function SearchBar({ onSearchTypeChange }) {
             placeholder="Tên sách..."
           />
         </div>
-        <Select onValueChange={handleChangeSearchType}>
-          <SelectTrigger className="w-[150px]">
-            <SelectValue placeholder="Tìm theo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="book">Tên sách</SelectItem>
-            <SelectItem value="auth">Tác giả</SelectItem>
-            <SelectItem value="pub">Nhà xuất bản</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <div className="py-3 px-7 font-semibold rounded-3xl bg-primary text-primary-foreground hover:shadow-2xl transition duration-300 cursor-pointer">
-          <span>Tìm kiếm</span>
+        <div className="flex flex-row rounded-lg bg-slate-800 text-white font-bold px-5 py-3 hover:bg-slate-600">
+          <ArrowRightToLine className="w-6 h-6" />
         </div>
       </div>
-      {/* </ShineBorder> */}
     </div>
   );
 }

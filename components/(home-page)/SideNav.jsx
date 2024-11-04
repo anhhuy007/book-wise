@@ -12,7 +12,6 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import { ChevronFirst } from "lucide-react";
-import { useState } from "react";
 import { useSideNav } from "@/contexts/SideNavContext";
 
 const links = [
