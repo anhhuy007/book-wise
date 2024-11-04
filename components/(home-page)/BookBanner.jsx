@@ -1,63 +1,128 @@
-import Image from "next/image"
-import { Bookmark, Share2, Download } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Image from "next/image";
+import {
+  Bookmark,
+  Share2,
+  Download,
+  Badge,
+  Star,
+  BookOpen,
+  Heart,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
-export default function BookBanner() {
+export default function BookBanner({
+  title,
+  author,
+  description,
+  avg_rating,
+  rating_count,
+  published_at,
+  page_count,
+  language,
+  book_cover,
+  author_avatar,
+}) {
+  // format published date to year-month-day
+  const published = new Date(published_at).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
-    <div className="flex flex-col md:flex-row items-start gap-8 p-6 md:p-8 bg-[#f8f7f4] rounded-lg max-w-4xl mx-auto">
-      <div className="relative w-full md:w-72 aspect-[3/4] shrink-0">
-        <img
-          src="https://www.nxbtre.com.vn/Images/Book/nxbtre_full_20222022_092215.jpg"
-          alt="Harry Potter and the Half-Blood Prince book cover"
-          className="rounded-lg shadow-lg object-cover"
-          width={300}
-          height={400}
-          priority
-        />
-      </div>
-      <div className="flex flex-col gap-4 flex-1">
-        <div className="space-y-2">
-          <h1 className="text-3xl md:text-4xl font-serif">Harry Potter: Half Blood Prince</h1>
-          <p className="text-lg text-muted-foreground">JK Rowling</p>
-        </div>
-        <p className="text-muted-foreground">
-          Get ready to uncover the dark secrets and betrayals in the book. A thrilling adventure awaits you.
-        </p>
-        <div className="flex items-center gap-4 mt-4">
-          <Button className="gap-2">
-            Start reading
-            <svg
-              className=" h-4 w-4 rotate-90"
-              width="15"
-              height="15"
-              viewBox="0 0 15 15"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3.13523 6.15803C3.3241 5.95657 3.64052 5.94637 3.84197 6.13523L7.5 9.56464L11.158 6.13523C11.3595 5.94637 11.6759 5.95657 11.8648 6.15803C12.0536 6.35949 12.0434 6.67591 11.842 6.86477L7.84197 10.6148C7.64964 10.7951 7.35036 10.7951 7.15803 10.6148L3.15803 6.86477C2.95657 6.67591 2.94637 6.35949 3.13523 6.15803Z"
-                fill="currentColor"
-                fillRule="evenodd"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-          </Button>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <Bookmark className="h-5 w-5" />
-              <span className="sr-only">Bookmark</span>
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <Share2 className="h-5 w-5" />
-              <span className="sr-only">Share</span>
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <Download className="h-5 w-5" />
-              <span className="sr-only">Download</span>
-            </Button>
+    <Card className="overflow-hidden bg-gradient-to-br from-yellow-400 via-pink-500 to-purple-600 max-w-screen-lg rounded-lg">
+      <CardContent className="p-6">
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="aspect-[3/4] overflow-hidden rounded-lg w-[300px] shadow-2xl">
+            <img
+              src={book_cover}
+              alt="Book Banner"
+              width={300}
+              height={400}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="md:w-2/3 flex flex-col justify-between mt-7">
+            <div>
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h2 className="text-3xl font-bold text-white mb-2">
+                    {title}
+                  </h2>
+                  <p className="text-xl text-yellow-100 mb-2 font-semibold">
+                    {author}
+                  </p>
+                </div>
+                <img
+                  src={author_avatar}
+                  alt="Author"
+                  width={48}
+                  height={48}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-white"
+                />
+              </div>
+              <p className="text-white mb-4 mt-8">{description}</p>
+              <div className="flex items-center mb-4 mt-7">
+                <div className="flex items-center mr-4">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Star
+                      key={index}
+                      className={`h-5 w-5 ${
+                        index < Math.floor(avg_rating)
+                          ? "text-yellow-300"
+                          : "text-gray-300"
+                      }`}
+                    />
+                  ))}
+                  <span className="ml-2 text-white font-semibold">
+                    ({avg_rating.toFixed(1)})
+                  </span>
+                </div>
+                <span className="text-white">{rating_count} ratings</span>
+              </div>
+              <div className="flex flex-wrap gap-4 mb-4">
+                <div>
+                  <span className="font-semibold text-yellow-200">
+                    Published:
+                  </span>
+                  <span className="ml-2 text-white">{published}</span>
+                </div>
+                <div>
+                  <span className="font-semibold text-yellow-200">Pages:</span>
+                  <span className="ml-2 text-white">{page_count}</span>
+                </div>
+                <div>
+                  <span className="font-semibold text-yellow-200">
+                    Language:
+                  </span>
+                  <span className="ml-2 text-white">{language}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3 mb-4">
+              <Button className="bg-white text-purple-700 hover:bg-yellow-100 transition-colors">
+                <BookOpen className="mr-2 h-4 w-4" />
+                Read Now
+              </Button>
+              <Button
+                variant="outline"
+                className="bg-white text-purple-700 hover:bg-yellow-100 transition-colors"
+              >
+                <Heart className="mr-2 h-4 w-4" />
+                Add to Wishlist
+              </Button>
+              <Button
+                variant="outline"
+                className="bg-white text-purple-700 hover:bg-yellow-100 transition-colors"
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Download Sample
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  )
+      </CardContent>
+    </Card>
+  );
 }

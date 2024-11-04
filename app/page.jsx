@@ -1,12 +1,12 @@
 "use client";
 
-import BookBanner from "@/components/(home-page)/BookBanner";
+import BookBannerCarousel from "@/components/(home-page)/BookBannerCarousel";
 import BookCarousel from "@/components/(home-page)/BookCarousel";
 
 export default function Page() {
   return (
-    <div className="flex flex-col">
-      <BookBanner />
+    <div className="flex flex-col w-full items-center">
+      <BookBannerCarousel />
 
       <h2 className="text-2xl font-bold self-start mt-10 mb-5">Best Seller</h2>
       <BookCarousel />

@@ -10,7 +10,7 @@ import { useSideNav } from "@/contexts/SideNavContext";
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="antialiased bg-background">
+      <body className="antialiased bg-background ">
         <SideNavProvider>
           <LayoutContent>{children}</LayoutContent>
         </SideNavProvider>
