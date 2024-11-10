@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { BellRing, User, Heart, HelpCircle, LogOut } from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
+import Notification from "@/components/(home-page)/Notification";
 
 export default function TopNav() {
   // return (
@@ -64,9 +65,7 @@ export default function TopNav() {
         </p>
       </Link>
       <div className="gap-6 flex items-center ">
-        <Link href="/notification" className="font-bold text-xl">
-          <BellRing className="h-8 w-8" />
-        </Link>
+        <Notification />
         <Separator orientation="vertical" className="h-10" />
         <DropdownMenu>
           <DropdownMenuTrigger className="font-bold text-base py-3">
