@@ -4,25 +4,28 @@ import { Card } from "@/components/ui/card";
 
 function BookAvailableStatus({ bookData }) {
   return (
-    <Card className="max-w-80 p-4 space-y-4">
+    <Card className="max-w-80 p-8 space-y-5 mt-2 xl:mt-0">
       <div className="space-y-2 text-center">
-        <h2 className="text-lg font-semibold text-green-600">
+        <h2 className="text-lg font-semibold  text-foreground">
           Tình trạng sách
         </h2>
-        <p className="text-sm">
-          {bookData.total} bản sao | {bookData.available} có sẵn |{" "}
-          {bookData.onHold} đang giữ
-        </p>
+        <span className="text-sm flex items-center">
+          <p>{bookData.copy}0 - Bản Copy</p>
+          <span className="mx-2">|</span>
+          <p>{bookData.available}1 - Có sẵn</p>
+          <span className="mx-2">|</span>
+          <p>{bookData.onHold}2 - Được mượn</p>
+        </span>
       </div>
-      <Button className="w-full bg-green-600 hover:bg-green-700">
-        Đặt giữ
+      <Button className="w-full bg-primary text-primary-foreground">
+        Mượn sách
       </Button>
       <Button className="w-full" variant="outline">
-        Để dành sau
+        Lưu vào Yêu thích
       </Button>
-      <Button variant="link" className="text-sm text-blue-600 w-full text-left">
+      {/* <Button variant="link" className="text-sm text-blue-600 w-full text-left">
         Tình trạng theo địa điểm
-      </Button>
+      </Button> */}
     </Card>
   );
 }

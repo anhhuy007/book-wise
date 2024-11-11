@@ -15,7 +15,7 @@ function BookGeneralInformation({ bookData }) {
           alt={bookData.title}
           width={300}
           height={300}
-          className="w-full max-w-[200px] md:max-w-[300px] h-auto object-cover"
+          className="w-full max-w-[120px] md:max-w-[300px] h-auto object-cover"
         />
         {/* Book Information */}
         <div className="flex xl:max-w-md flex-col gap-2 xl:gap-5 space-y-4">
@@ -55,11 +55,14 @@ function BookGeneralInformation({ bookData }) {
             <span>{bookData.avg_rating.toFixed(1)}</span>
             <span>({bookData.rating_count})</span>
           </div>
-          <span>
+          <span className="hidden md:block">
             <p>"{bookData.description}"</p>
           </span>
         </div>
       </div>
+      <span className="my-10 pr-3 text-center md:hidden">
+        <p>"{bookData.description}"</p>
+      </span>
     </>
   );
 }

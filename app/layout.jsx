@@ -6,6 +6,7 @@ import TopNav from "@/components/(home-page)/TopNav";
 import { Separator } from "@/components/ui/separator";
 import { SideNavProvider } from "@/contexts/SideNavContext";
 import { useSideNav } from "@/contexts/SideNavContext";
+import Footer from "@/components/(home-page)/Footer";
 
 export default function RootLayout({ children }) {
   return (
@@ -23,7 +24,7 @@ function LayoutContent({ children }) {
   const { expanded } = useSideNav();
 
   return (
-    <div className="flex">
+    <div className="flex min-h-screen">
       <div className="flex-none">
         <SideNav />
       </div>
@@ -36,7 +37,8 @@ function LayoutContent({ children }) {
           <TopNav />
           <Separator />
         </div>
-        <main className="flex-1 p-6">{children}</main>
+        <main className="flex-1 p-2 md:p-6 mb-20">{children}</main>
+        <Footer />
       </div>
     </div>
   );

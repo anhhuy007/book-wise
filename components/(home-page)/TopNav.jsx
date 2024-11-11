@@ -57,10 +57,10 @@ export default function TopNav() {
   const pathname = usePathname();
 
   return (
-    <div className="w-full h-24 bg-background text-foreground sticky top-0 flex justify-between pt-4 px-12">
+    <div className="w-full h-24 bg-background text-foreground sticky top-0 flex gap-10 md:justify-between pt-4 px-12">
       <Link href="/" className="border-collapse">
-        <p className="mx-auto mt-7 mb-10 text-foreground text-2xl font-bold ">
-          Library Management
+        <p className="mx-auto md:mt-7 md:mb-10 text-foreground text-base md:text-2xl font-bold ">
+          Book Wise
         </p>
       </Link>
       <div className="gap-6 flex items-center ">
