@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import appLogo from "../../assets/icons/logo.png";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,28 +13,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
-import { BellRing, User, Heart, HelpCircle, LogOut } from "lucide-react";
+import SearchBar from "@/components/(home-page)/SearchBar";
+import {
+  BellRing,
+  User,
+  Heart,
+  HelpCircle,
+  LogOut,
+  CircleHelp,
+} from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
 import Notification from "@/components/(home-page)/Notification";
+import { Separator } from "@/components/ui/separator";
 
 export default function TopNav() {
-  // return (
-  //   <div className="w-full h-24 bg-background text-foreground sticky top-0 flex justify-end pt-4 px-12">
-  //     <div className="gap-8 flex items-center">
-  //       <Link href="/sign-up" className="font-bold text-base">
-  //         Đăng ký
-  //       </Link>
-  //       <Link
-  //         href="/sign-in"
-  //         className="font-bold text-base bg-primary text-primary-foreground px-7 py-3 rounded-3xl shadow-2xl"
-  //       >
-  //         Đăng nhập
-  //       </Link>
-  //     </div>
-  //   </div>
-  // );
   const userItems = [
     {
       name: "Cài đặt tài khoản",
@@ -56,20 +52,32 @@ export default function TopNav() {
   ];
 
   const pathname = usePathname();
+  const [searchType, setSearchType] = useState("");
+
+  const handleChangeSearchType = (value) => {
+    setSearchType(value);
+  };
 
   return (
-    <div className="w-full h-24 bg-background text-foreground sticky top-0 flex justify-between pt-4 px-12">
+    <div className="flex flex-row w-full h-24 bg-background items-center text-foreground top-0 justify-between pt-4 pl-5 pr-10">
       <Link href="/" className="border-collapse">
-        <p className="mx-auto mt-7 mb-10 text-foreground text-2xl font-bold ">
-          Library Management
-        </p>
+        <div className="flex items-center gap-3">
+          <Image src={appLogo} alt="Logo" className="w-9" />
+          <p className="mx-auto text-foreground text-2xl font-bold ">
+            Book Wise
+          </p>
+        </div>
       </Link>
+      <SearchBar onSearchTypeChange={handleChangeSearchType} />
       <div className="gap-6 flex items-center ">
         <Notification />
         <Separator orientation="vertical" className="h-10" />
         <DropdownMenu>
-          <DropdownMenuTrigger className="font-bold text-base py-3">
-            Tên người dùng
+          <DropdownMenuTrigger>
+            <Avatar>
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Thông tin tài khoản</DropdownMenuLabel>
@@ -97,10 +105,6 @@ export default function TopNav() {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
-        <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
       </div>
     </div>
   );

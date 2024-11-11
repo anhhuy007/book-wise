@@ -11,8 +11,7 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import { ChevronFirst } from "lucide-react";
-import { useState } from "react";
+import { ChevronsLeft } from "lucide-react";
 import { useSideNav } from "@/contexts/SideNavContext";
 
 const links = [
@@ -68,9 +67,9 @@ function SideNav() {
           onClick={() => setExpanded((curr) => !curr)}
           className="p-1.5 rounded-lg hover:bg-accent"
         >
-          <ChevronFirst
-            size={24}
-            className="transition-transform duration-300"
+          <ChevronsLeft
+            size={28}
+            className="transition-transform duration-300 mx-auto"
             style={{ transform: expanded ? "rotate(0deg)" : "rotate(180deg)" }}
           />
         </button>
