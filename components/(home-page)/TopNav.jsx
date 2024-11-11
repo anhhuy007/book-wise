@@ -59,7 +59,7 @@ export default function TopNav() {
   };
 
   return (
-    <div className="flex flex-row w-full h-24 bg-background items-center text-foreground top-0 justify-between pt-4 pl-5 pr-10">
+    <div className="w-full h-24 bg-background text-foreground sticky top-0 flex gap-10 md:justify-between pt-4 px-12">
       <Link href="/" className="border-collapse">
         <div className="flex items-center gap-3">
           <Image src={appLogo} alt="Logo" className="w-9" />
