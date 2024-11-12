@@ -1,12 +1,14 @@
 "use client";
 
 import "./globals.css";
-import SideNav from "@/components/(home-page)/SideNav";
+import SideNav, { ExpandedButton } from "@/components/(home-page)/SideNav";
 import TopNav from "@/components/(home-page)/TopNav";
 import { Separator } from "@/components/ui/separator";
 import { SideNavProvider } from "@/contexts/SideNavContext";
 import { useSideNav } from "@/contexts/SideNavContext";
 import Footer from "@/components/(home-page)/Footer";
+import { ChevronsLeft } from "lucide-react";
+import { expandedButton } from "@/components/(home-page)/SideNav";
 
 export default function RootLayout({ children }) {
   return (
@@ -21,24 +23,27 @@ export default function RootLayout({ children }) {
 }
 
 function LayoutContent({ children }) {
-  const { expanded } = useSideNav();
+  const { expanded, setExpanded } = useSideNav();
 
   return (
-    <div className="flex min-h-screen">
-      <div className="flex-none">
-        <SideNav />
+    <div className="flex flex-col">
+      <div className=" flex-none sticky top-0 z-40 ">
+        <TopNav />
+        <Separator />
       </div>
-      <div
-        className={`flex flex-col flex-1 transition-all duration-300 ${
-          expanded ? "ml-64" : "ml-20"
-        }`}
-      >
-        <div className="h-24 flex-none sticky top-0 z-40 bg-background">
-          <TopNav />
-          <Separator />
+      <div className="flex-1 flex">
+        <div className="flex-none flex flex-col">
+          <ExpandedButton />
+          <SideNav />
         </div>
-        <main className="flex-1 p-6">{children}</main>
-        <Footer />
+        <div
+          className={`flex-1 mt-12 transition-all duration-300 ${
+            expanded ? "md:ml-64" : "md:ml-20"
+          }`}
+        >
+          <main className="p-2 md:p-6">{children}</main>
+          <Footer />
+        </div>
       </div>
     </div>
   );

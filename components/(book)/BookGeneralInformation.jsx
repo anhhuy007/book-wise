@@ -8,17 +8,24 @@ function BookGeneralInformation({ bookData }) {
 
   return (
     <>
-      <div className="flex flex-grow gap-10">
+      <div className="flex flex-grow gap-5 md:gap-10">
         {/* Book cover */}
         <Image
           src={bookData.img_url}
           alt={bookData.title}
           width={300}
-          height={300}
-          className="w-full max-w-[120px] md:max-w-[300px] h-auto object-cover"
+          height={400}
+          className="
+            w-full h-auto object-cover
+            aspect-[3/4] 
+            max-w-[150px]
+            md:w-1/3 md:max-w-[250px]
+            lg:w-1/4 lg:max-w-[350px]
+            xl:w-1/3 xl:max-w-[400px]
+          "
         />
         {/* Book Information */}
-        <div className="flex xl:max-w-md flex-col gap-2 xl:gap-5 space-y-4">
+        <div className="flex xl:max-w-md flex-col gap-1 md:gap-5 space-y-4">
           <h1 className="text-2xl xl:text-5xl font-semibold">
             {bookData.title}
           </h1>
@@ -26,8 +33,8 @@ function BookGeneralInformation({ bookData }) {
             Written by: {bookData.author}
           </h2>
           <p className="text-lg xl:text-2xl">{bookData.category}</p>
-          <div className="flex items-center space-x-2">
-            <div className="flex">
+          <div className="flex flex-col gap-2 md:flex-row md:space-x-2 ">
+            <div className="flex ">
               {[...Array(5)].map((_, index) => {
                 if (index < fullStars) {
                   return (
@@ -52,8 +59,10 @@ function BookGeneralInformation({ bookData }) {
                 }
               })}
             </div>
-            <span>{bookData.avg_rating.toFixed(1)}</span>
-            <span>({bookData.rating_count})</span>
+            <div className="flex gap-2">
+              <span>{bookData.avg_rating.toFixed(1)}</span>
+              <span>({bookData.rating_count})</span>
+            </div>
           </div>
           <span className="hidden md:block">
             <p>"{bookData.description}"</p>

@@ -32,7 +32,7 @@ function BookDetail({ params }) {
           {/* Left Column - Book Cover and Information */}
           <BookGeneralInformation bookData={bookData} />
           {/* Right Column - Book Available Status */}
-          <div className="flex justify-center items-start xl:flex-shrink-0">
+          <div className="flex justify-center items-center xl:items-start xl:flex-shrink-0">
             <BookAvailableStatus bookData={bookData} />
           </div>
         </div>

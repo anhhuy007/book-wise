@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 function AboutSection() {
   return (
     <div>
-      <section className="grid gap-6 md:grid-cols-[200px,1fr]">
+      <section className="grid gap-6 md:grid-cols-[200px,1fr] p-0 xl:pr-52">
         <h2 className="text-2xl font-bold">About</h2>
         <div className="space-y-6">
           <div>

@@ -21,10 +21,12 @@ import {
   HelpCircle,
   LogOut,
   CircleHelp,
+  SearchIcon,
 } from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
 import Notification from "@/components/(home-page)/Notification";
+import SearchButton from "@/components/(home-page)/SearchButton";
 import { Separator } from "@/components/ui/separator";
 
 export default function TopNav() {
@@ -59,52 +61,62 @@ export default function TopNav() {
   };
 
   return (
-    <div className="w-full h-24 bg-background text-foreground sticky top-0 flex gap-10 md:justify-between pt-4 px-12">
-      <Link href="/" className="border-collapse">
-        <div className="flex items-center gap-3">
-          <Image src={appLogo} alt="Logo" className="w-9" />
-          <p className="mx-auto text-foreground text-2xl font-bold ">
-            Book Wise
-          </p>
+    <div className="w-full bg-background text-foreground sticky top-0">
+      <div className="w-full h-20 md:h-24 flex items-center justify-between">
+        <div className="w-full mx-auto px-6 md:px-12 flex items-center justify-between xl:gap-10">
+          <Link href="/" className="border-collapse flex">
+            <div className="flex items-center gap-3">
+              <Image src={appLogo} alt="Logo" className="w-9" />
+              <p className="text-foreground text-xl md:text-2xl font-bold">
+                Book Wise
+              </p>
+            </div>
+          </Link>
+
+          <div className="hidden lg:block">
+            <SearchBar onSearchTypeChange={handleChangeSearchType} />
+          </div>
+
+          <div className="gap-4 md:gap-6 flex items-end">
+            <div className="flex items-center justify-center gap-2 md:gap-6 lg:hidden">
+              <SearchButton />
+              <Separator orientation="vertical" className="h-10" />
+            </div>
+            <Notification />
+            <Separator orientation="vertical" className="h-10" />
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Thông tin tài khoản</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {userItems.map((item) => (
+                  <React.Fragment key={item.name}>
+                    <DropdownMenuItem
+                      className={`${
+                        pathname === item.link
+                          ? "bg-primary text-primary-foreground"
+                          : ""
+                      } py-2 flex items-center`}
+                    >
+                      <Link
+                        href={item.link}
+                        className="py-2 flex items-center w-full"
+                      >
+                        <span className="text-xl mr-2 ml-2">{item.icon}</span>
+                        <p className="ml-3 text-base">{item.name}</p>
+                      </Link>
+                    </DropdownMenuItem>
+                  </React.Fragment>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </Link>
-      <SearchBar onSearchTypeChange={handleChangeSearchType} />
-      <div className="gap-6 flex items-center ">
-        <Notification />
-        <Separator orientation="vertical" className="h-10" />
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Thông tin tài khoản</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {userItems.map((item) => (
-              <React.Fragment key={item.name}>
-                <DropdownMenuItem
-                  className={`${
-                    pathname === item.link
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  } py-2 flex items-center`}
-                >
-                  <Link
-                    href={item.link}
-                    className={`${
-                      pathname === item.link ? "" : ""
-                    } py-2 flex items-center`}
-                  >
-                    <span className="text-xl mr-2 ml-2">{item.icon}</span>
-                    <p className="ml-3 text-base">{item.name}</p>
-                  </Link>
-                </DropdownMenuItem>
-              </React.Fragment>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </div>
   );

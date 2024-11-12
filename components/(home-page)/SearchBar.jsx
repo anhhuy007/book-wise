@@ -16,9 +16,9 @@ function SearchBar({ onSearchTypeChange }) {
 
   return (
     <div className="relative group ">
-      <div className="flex items-center p-6 space-x-5 rounded-xl transform transition duration-300">
+      <div className="flex items-center p-6 space-x-2 md:space-x-5 rounded-xl transform transition duration-300">
         <Select onValueChange={handleChangeSearchType}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="w-[100px] md:w-[150px]">
             <SelectValue placeholder="Tìm theo" />
           </SelectTrigger>
           <SelectContent>
@@ -27,10 +27,10 @@ function SearchBar({ onSearchTypeChange }) {
             <SelectItem value="pub">Nhà xuất bản</SelectItem>
           </SelectContent>
         </Select>
-        <div className="flex bg-accent p-3 space-x-4 rounded-lg">
+        <div className="flex bg-accent max-w-[170px] md:max-w-max p-3 space-x-4 rounded-lg">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 opacity-30"
+            className="h-6 w-6 opacity-30 hidden md:block"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -43,7 +43,7 @@ function SearchBar({ onSearchTypeChange }) {
             />
           </svg>
           <input
-            className="bg-accent outline-none flex-1 pr-10"
+            className="bg-accent outline-none md:flex-1 md:pr-10"
             type="text"
             placeholder="Tên sách..."
           />

@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 function OpinionSection() {
   return (
     <>
-      <section className="grid gap-6 md:grid-cols-[200px,1fr]">
+      <section className="grid gap-6 md:grid-cols-[200px,1fr] p-0 xl:pr-52">
         <h2 className="text-2xl font-bold">Opinion</h2>
         <div className="space-y-8">
           <div>
