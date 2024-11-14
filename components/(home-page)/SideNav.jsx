@@ -11,7 +11,7 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import { ChevronFirst } from "lucide-react";
+import { ChevronsLeft } from "lucide-react";
 import { useSideNav } from "@/contexts/SideNavContext";
 
 const links = [
@@ -44,9 +44,31 @@ const links = [
   { name: "Trợ giúp", href: "/help", icon: CircleHelp, category: "KHÁC" },
 ];
 
+export function ExpandedButton() {
+  const { expanded, setExpanded } = useSideNav();
+
+  return (
+    <div
+      className={`flex fixed flex-col md:shadow-sm z-50 p-2 transition-[width] duration-300 ${
+        expanded ? "w-64" : "w-20"
+      }`}
+    >
+      <button
+        onClick={() => setExpanded((curr) => !curr)}
+        className="p-1.5 z-50 bg-background border-2 rounded-lg hover:bg-accent "
+      >
+        <ChevronsLeft
+          size={28}
+          className="transition-transform duration-300 mx-auto"
+          style={{ transform: expanded ? "rotate(0deg)" : "rotate(180deg)" }}
+        />
+      </button>
+    </div>
+  );
+}
 function SideNav() {
   const pathName = usePathname();
-  const { expanded, setExpanded } = useSideNav();
+  const { expanded } = useSideNav();
 
   const groupedLinks = links.reduce((acc, link) => {
     if (!acc[link.category]) {
@@ -58,21 +80,27 @@ function SideNav() {
 
   return (
     <nav
-      className={`h-full fixed top-0 mt-28 bg-background overflow-x-hidden shadow-lg transition-[width] duration-300 ${
-        expanded ? "w-64" : "w-20"
+      className={`h-full fixed top-5 mt-28 md:mt-32 md:shadow-lg bg-background overflow-x-hidden transition-[width] duration-300 ${
+        expanded ? "w-64 z-0" : "-z-50 md:z-0 w-20"
       }`}
     >
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col z-50">
         <button
           onClick={() => setExpanded((curr) => !curr)}
-          className="p-1.5 rounded-lg hover:bg-accent"
+          className="p-1.5 z-50 border-2 m-2 rounded-lg hover:bg-accent"
         >
-          <ChevronFirst
-            size={24}
-            className="transition-transform duration-300"
+          <ChevronsLeft
+            size={28}
+            className="transition-transform duration-300 mx-auto"
             style={{ transform: expanded ? "rotate(0deg)" : "rotate(180deg)" }}
           />
         </button>
+      </div> */}
+      <div
+        className={`${
+          expanded ? "flex flex-col" : "hidden md:flex md:flex-col"
+        }`}
+      >
         {Object.entries(groupedLinks).map(([category, categoryLinks]) => (
           <div key={category} className="flex flex-col gap-1">
             <h3

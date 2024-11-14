@@ -60,10 +60,13 @@ export function BookCarousel() {
 
   return (
     <div className="flex w-full justify-center">
-      <Carousel className="w-full max-w-screen-xl pl-7">
+      <Carousel className="w-full max-w-screen-xl">
         <CarouselContent>
           {Array.from({ length: books.length }).map((_, index) => (
-            <CarouselItem key={index} className="md:basis-1/3 lg:basis-1/5">
+            <CarouselItem
+              key={index}
+              className="ml-[5px] pt-5 pb-2 md:basis-1/3 lg:basis-1/5"
+            >
               <BookCard {...books[index]} />
             </CarouselItem>
           ))}
