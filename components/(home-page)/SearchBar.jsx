@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -7,15 +9,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ArrowRightToLine, Search } from "lucide-react";
+import { ArrowRightToLine } from "lucide-react";
 
-function SearchBar({ onSearchTypeChange }) {
+const SearchBar = () => {
+  const router = useRouter();
+  const [searchType, setSearchType] = useState("book");
+  const [searchValue, setSearchValue] = useState("");
+
   const handleChangeSearchType = (value) => {
-    onSearchTypeChange(value);
+    setSearchType(value);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch(e);
+    }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      router.push(
+        `/search?type=${searchType}&q=${encodeURIComponent(searchValue)}`
+      );
+    }
   };
 
   return (
-    <div className="relative group ">
+    <div className="relative group">
       <div className="flex items-center p-6 space-x-2 md:space-x-5 rounded-xl transform transition duration-300">
         <Select onValueChange={handleChangeSearchType}>
           <SelectTrigger className="w-[100px] md:w-[150px]">
@@ -46,14 +67,20 @@ function SearchBar({ onSearchTypeChange }) {
             className="bg-accent outline-none md:flex-1 md:pr-10"
             type="text"
             placeholder="Tên sách..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={handleKeyPress}
           />
         </div>
-        <div className="flex flex-row rounded-lg bg-slate-800 text-white font-bold px-5 py-3 hover:bg-slate-600">
+        <div
+          className="flex flex-row rounded-lg bg-slate-800 text-white font-bold px-5 py-3 hover:bg-slate-600 cursor-pointer"
+          onClick={handleSearch}
+        >
           <ArrowRightToLine className="w-6 h-6" />
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default SearchBar;

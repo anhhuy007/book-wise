@@ -49,7 +49,7 @@ export function ExpandedButton() {
 
   return (
     <div
-      className={`flex fixed flex-col md:shadow-sm z-50 p-2 transition-[width] duration-300 ${
+      className={`flex fixed flex-col md:shadow-sm z-50 transition-[width] duration-300 ${
         expanded ? "w-64" : "w-20"
       }`}
     >
@@ -80,7 +80,7 @@ function SideNav() {
 
   return (
     <nav
-      className={`h-full fixed top-5 mt-28 md:mt-32 md:shadow-lg bg-background overflow-x-hidden transition-[width] duration-300 ${
+      className={`h-full fixed top-5 mt-24 md:mt-32 md:shadow-lg bg-background overflow-x-hidden transition-[width] duration-300 ${
         expanded ? "w-64 z-0" : "-z-50 md:z-0 w-20"
       }`}
     >
