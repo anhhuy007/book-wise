@@ -1,18 +1,12 @@
-const { Pool } = require('pg');
+import { neon } from "@neondatabase/serverless";
 
-// Create a pool with the connection string from the environment variables
-const pool = new Pool({
-  connectionString: process.env.POSTGRES_URL,
-  ssl: {
-    rejectUnauthorized: false, // This is important for connecting to some hosted databases
-  },
-});
+async function getData() {
+  const sql = neon(process.env.DATABASE_URL_DEV);
+  const response = await sql`SELECT version()`;
+  return response[0].version;
+}
 
-// Test the connection
-pool.connect((err, client, release) => {
-  if (err) {
-    return console.error('Error acquiring client', err.stack);
-  }
-  console.log('Connected to PostgreSQL database');
-  release();
-});
+export default async function Page() {
+  const data = await getData();
+  return <>{data}</>;
+}
