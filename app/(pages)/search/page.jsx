@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/pagination";
 import Sort from "@/components/(book-search-result)/Sort";
 import Filter from "@/components/(book-search-result)/Filter";
+import FilterSheet from "@/components/(book-search-result)/FilterSheet";
 
 const bookData = {
   created_at: "2024-11-02T18:33:58.986Z",
@@ -88,61 +89,73 @@ function ResultPage() {
   const endResult = Math.min(currentPage * booksPerPage, totalBooks);
 
   return (
-    <div className="flex relative gap-10">
-      <Filter />
-      <Separator orientation="vertical" className="hidden md:block h-[300vh]" />
-      <div className="flex-1 flex flex-col px-6 lg:pr-12 xl:pr-20 gap-8 md:gap-8">
-        <div className="flex justify-between items-center">
-          <h1 className="text-xl md:text-2xl">
-            Keyword Search: <span className="font-extrabold">{query}</span>
-          </h1>
-          <Sort />
+    <>
+      <div className="flex min-h-screen">
+        <div className="hidden lg:block w-64 relative">
+          <div className="sticky ml-4 top-[150px]">
+            <Filter />
+          </div>
         </div>
+        <div className="flex-1 flex gap-10 lg:ml-[200px]">
+          <Separator orientation="vertical" className="hidden lg:block full" />
+          <div className="flex-1 flex flex-col px-6 lg:pr-12 xl:pr-20 gap-8 md:gap-8">
+            <div className="flex justify-between items-center">
+              <h1 className="text-xl md:text-2xl">
+                Keyword Search: <span className="font-extrabold">{query}</span>
+              </h1>
+              <Sort />
+            </div>
 
-        <div className="text-lg text-muted-foreground">
-          Showing {startResult} to {endResult} of {totalBooks} results
+            <div className="text-lg text-muted-foreground">
+              Showing {startResult} to {endResult} of {totalBooks} results
+            </div>
+
+            <div className="block lg:hidden">
+              <FilterSheet />
+            </div>
+
+            <Separator className="bg-foreground" />
+
+            <div className="flex flex-col gap-6 md:gap-10">
+              {Array.from({
+                length: Math.min(booksPerPage, endResult - startResult + 1),
+              }).map((_, index) => (
+                <React.Fragment key={index}>
+                  <BookSearchResult bookData={bookData} />
+                  {index < Math.min(booksPerPage, endResult - startResult) && (
+                    <Separator className="bg-foreground" />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.max(
+                      1,
+                      currentPage - 1
+                    )}`}
+                    aria-disabled={currentPage === 1}
+                  />
+                </PaginationItem>
+                {renderPaginationItems()}
+                <PaginationItem>
+                  <PaginationNext
+                    href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.min(
+                      totalPages,
+                      currentPage + 1
+                    )}`}
+                    aria-disabled={currentPage === totalPages}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </div>
         </div>
-
-        <Separator className="bg-foreground" />
-
-        <div className="flex flex-col gap-6 md:gap-10">
-          {Array.from({
-            length: Math.min(booksPerPage, endResult - startResult + 1),
-          }).map((_, index) => (
-            <React.Fragment key={index}>
-              <BookSearchResult bookData={bookData} />
-              {index < Math.min(booksPerPage, endResult - startResult) && (
-                <Separator className="bg-foreground" />
-              )}
-            </React.Fragment>
-          ))}
-        </div>
-
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.max(
-                  1,
-                  currentPage - 1
-                )}`}
-                aria-disabled={currentPage === 1}
-              />
-            </PaginationItem>
-            {renderPaginationItems()}
-            <PaginationItem>
-              <PaginationNext
-                href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.min(
-                  totalPages,
-                  currentPage + 1
-                )}`}
-                aria-disabled={currentPage === totalPages}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
       </div>
-    </div>
+    </>
   );
 }
 

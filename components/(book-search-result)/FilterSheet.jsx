@@ -1,11 +1,20 @@
 import React, { useState } from "react";
 import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetDescription,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { SlidersHorizontal } from "lucide-react";
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -16,17 +25,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Button } from "@/components/ui/button";
 
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-
-function Filter() {
+export default function FilterSheet() {
   const currentYear = new Date().getFullYear();
   const [category, setCategory] = useState("");
   const [authorName, setAuthorName] = useState("");
@@ -60,9 +60,16 @@ function Filter() {
   };
 
   return (
-    <>
-      <Card className="w-[400px] h-fit overflow-y-auto">
-        <div className="flex flex-col gap-10 mt-2 px-8 p-6 ">
+    <Sheet>
+      <SheetTrigger asChild className="">
+        <Button className="flex items-center py-7 justify-between px-4 whitespace-nowrap font-semibold">
+          <SlidersHorizontal size={20} />
+          <p className="ml-3 text-base">Filters</p>
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="w-[400px]" side="left">
+        <SheetTitle>Filter Option</SheetTitle>
+        <div className="flex flex-col gap-10 mt-2 pt-8">
           <p className="text-3xl font-semibold">Bộ lọc tìm kiếm</p>
           <Accordion
             type="multiple"
@@ -173,23 +180,7 @@ function Filter() {
           </Accordion>
           <Button onClick={handleApply}>Áp dụng bộ lọc</Button>
         </div>
-      </Card>
-    </>
+      </SheetContent>
+    </Sheet>
   );
-}
-
-export default Filter;
-
-export function FilterSheet() {
-  <Sheet>
-    <SheetTrigger>Filter</SheetTrigger>
-    <SheetContent className="w-[300px]">
-      <SheetHeader>
-        <SheetTitle>Filter Option</SheetTitle>
-        <SheetDescription>
-          <Filter />
-        </SheetDescription>
-      </SheetHeader>
-    </SheetContent>
-  </Sheet>;
 }
