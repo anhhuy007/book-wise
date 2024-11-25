@@ -54,11 +54,6 @@ export default function TopNav() {
   ];
 
   const pathname = usePathname();
-  const [searchType, setSearchType] = useState("");
-
-  const handleChangeSearchType = (value) => {
-    setSearchType(value);
-  };
 
   return (
     <div className="w-full bg-background text-foreground sticky top-0">
@@ -74,7 +69,7 @@ export default function TopNav() {
           </Link>
 
           <div className="hidden lg:block">
-            <SearchBar onSearchTypeChange={handleChangeSearchType} />
+            <SearchBar />
           </div>
 
           <div className="gap-4 md:gap-6 flex items-end">
