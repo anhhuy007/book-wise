@@ -44,8 +44,8 @@ const SearchBar = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="book">Sách</SelectItem>
-            <SelectItem value="auth">Tác giả</SelectItem>
-            <SelectItem value="pub">Nhà xuất bản</SelectItem>
+            <SelectItem value="author">Tác giả</SelectItem>
+            <SelectItem value="category">Thể loại</SelectItem>
           </SelectContent>
         </Select>
         <div className="flex bg-accent max-w-[170px] md:max-w-max p-3 space-x-4 rounded-lg">

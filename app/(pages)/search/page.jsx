@@ -25,7 +25,7 @@ function ResultPage() {
   const searchParams = useSearchParams();
   const searchType = searchParams.get("type");
   const query = searchParams.get("q");
-  const sort = searchParams.get("sort");
+  const [sort, setSort] = useState(searchParams.get("sort") || "rating");
   const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
   const { data, error, isLoading } = useSWR(
     `/api/search?type=${searchType}&q=${query}`,
@@ -34,6 +34,11 @@ function ResultPage() {
 
   useEffect(() => {
     setCurrentPage(Number(searchParams.get("page")) || 1);
+  }, [searchParams]);
+
+  useEffect(() => {
+    setSort(searchParams.get("sort") || "rating");
+    console.log("Sort type changed: ", sort);
   }, [searchParams]);
 
   if (isLoading) return <div>Loading...</div>;
@@ -88,13 +93,13 @@ function ResultPage() {
   const sortedData = [...data].sort((a, b) => {
     if (sort === "rating") {
       return b.avg_rating - a.avg_rating;
-    } else if (sort === "date_up") {
+    } else if (sort === "date-up") {
       return a.published_date - b.published_date;
-    } else if (sort === "date_down") {
+    } else if (sort === "date-down") {
       return b.published_date - a.published_date;
-    } else if (sort === "a_to_z") {
+    } else if (sort === "a-to-z") {
       return a.title.localeCompare(b.title);
-    } else if (sort === "z_to_a") {
+    } else if (sort === "z-to-a") {
       return b.title.localeCompare(a.title);
     }
   });
