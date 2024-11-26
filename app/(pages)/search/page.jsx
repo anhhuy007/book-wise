@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { BookSearchResult } from "@/components/(book)/BookGeneralInformation";
@@ -33,13 +33,68 @@ const bookData = {
 };
 
 function ResultPage() {
+  //
   const searchParams = useSearchParams();
   const searchType = searchParams.get("type");
   const query = searchParams.get("q");
   const sort = searchParams.get("sort");
+
+  //Filters
+  const [filters, setFilters] = useState({
+    category: "",
+    authorName: "",
+    startYear: "1900",
+    endYear: new Date().getFullYear().toString(),
+    ratingRange: [0, 5],
+    language: "",
+  });
+
+  const handleApplyFilters = (newFilters) => {
+    setFilters(newFilters);
+    console.log("Applied filters:", newFilters);
+  };
+
   const currentPage = Number(searchParams.get("page")) || 1;
-  const totalBooks = 100;
+  const [books, setBooks] = useState([]);
+  const [totalBooks, setTotalBooks] = useState(0);
   const booksPerPage = 10;
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const queryParams = new URLSearchParams(window.location.search);
+        const searchType = queryParams.get("type");
+        const query = queryParams.get("q");
+        const sort = queryParams.get("sort");
+        const authorName = queryParams.get("authorName");
+        const category = queryParams.get("category");
+        const startYear = queryParams.get("startYear");
+        const endYear = queryParams.get("endYear");
+
+        const ratingRangeParam = queryParams.get("ratingRange");
+        const ratingRange = ratingRangeParam
+          ? ratingRangeParam.split("-").map(Number)
+          : [0, 5];
+
+        const language = queryParams.get("language");
+        const currentPage = Number(queryParams.get("page")) || 1;
+
+        const response = await fetch(
+          `/api/books?type=${searchType}&q=${query}&sort=${sort}&page=${currentPage}&authorName=${authorName}&category=${category}&startYear=${startYear}&endYear=${endYear}&ratingRange=${ratingRange.join(
+            ","
+          )}&language=${language}`
+        );
+        const data = await response.json();
+        setBooks(data.books);
+        setTotalBooks(data.totalBooks);
+      } catch (error) {
+        console.error("Error fetching books:", error);
+      }
+    };
+
+    fetchBooks();
+  }, [searchType, query, sort, currentPage, filters]);
+
   const totalPages = Math.ceil(totalBooks / booksPerPage);
 
   const renderPaginationItems = () => {
@@ -66,9 +121,11 @@ function ResultPage() {
         );
       } else if (i === 2 && currentPage > ellipsisThreshold + 1) {
         items.push(
-          <PaginationItem key="start-ellipsis">
-            <PaginationEllipsis />
-          </PaginationItem>
+          -(
+            <PaginationItem key="start-ellipsis">
+              <PaginationEllipsis />
+            </PaginationItem>
+          )
         );
       } else if (
         i === totalPages - 1 &&
@@ -93,7 +150,7 @@ function ResultPage() {
       <div className="flex min-h-screen">
         <div className="hidden lg:block w-64 relative">
           <div className="sticky ml-4 top-[150px]">
-            <Filter />
+            <Filter filters={filters} onApply={handleApplyFilters} />
           </div>
         </div>
         <div className="flex-1 flex gap-10 lg:ml-[200px]">
