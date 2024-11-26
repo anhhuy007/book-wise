@@ -4,7 +4,7 @@ import Link from "next/link";
 const BookCard = ({
   img_url,
   title,
-  author,
+  authors,
   avg_rating,
   rating_count,
   category,
@@ -50,7 +50,7 @@ const BookCard = ({
               {title}
             </h3>
             <span className="text-sm text-gray-500 block truncate">
-              {author}
+              {authors}
             </span>
           </div>
         </div>

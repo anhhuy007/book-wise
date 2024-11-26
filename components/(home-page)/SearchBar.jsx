@@ -43,7 +43,7 @@ const SearchBar = () => {
             <SelectValue placeholder="Tìm theo" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="book">Tên sách</SelectItem>
+            <SelectItem value="book">Sách</SelectItem>
             <SelectItem value="auth">Tác giả</SelectItem>
             <SelectItem value="pub">Nhà xuất bản</SelectItem>
           </SelectContent>

@@ -1,9 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { BookSearchResult } from "@/components/(book)/BookGeneralInformation";
+import useSWR from "swr";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
 import {
   Pagination,
   PaginationContent,
@@ -17,34 +21,30 @@ import Sort from "@/components/(book-search-result)/Sort";
 import Filter from "@/components/(book-search-result)/Filter";
 import FilterSheet from "@/components/(book-search-result)/FilterSheet";
 
-const bookData = {
-  created_at: "2024-11-02T18:33:58.986Z",
-  title: "Atomic Habits",
-  img_url:
-    "https://image.slidesharecdn.com/nhagiakim-161103070024/95/nh-gi-kim-the-alchemist-1-638.jpg?cb=1478156544",
-  author: "James Clear",
-  published_year: "2018-10-16T00:00:00.000Z",
-  category: "Self-Development",
-  avg_rating: 4.8,
-  rating_count: 158432,
-  description:
-    "A revolutionary system to get 1% better every day. Learn how tiny changes can lead to remarkable results in this practical guide to habit formation and behavior change.",
-  id: "2",
-};
-
 function ResultPage() {
   const searchParams = useSearchParams();
   const searchType = searchParams.get("type");
   const query = searchParams.get("q");
   const sort = searchParams.get("sort");
-  const currentPage = Number(searchParams.get("page")) || 1;
-  const totalBooks = 100;
-  const booksPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(Number(searchParams.get("page")) || 1);
+  const { data, error, isLoading } = useSWR(
+    `/api/search?type=${searchType}&q=${query}`,
+    fetcher
+  );
+
+  useEffect(() => {
+    setCurrentPage(Number(searchParams.get("page")) || 1);
+  }, [searchParams]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
+
+  const totalBooks = data.length;
+  const booksPerPage = 5;
   const totalPages = Math.ceil(totalBooks / booksPerPage);
 
   const renderPaginationItems = () => {
     const items = [];
-    const maxVisiblePages = 5;
     const ellipsisThreshold = 3;
 
     for (let i = 1; i <= totalPages; i++) {
@@ -85,8 +85,26 @@ function ResultPage() {
     return items;
   };
 
+  const sortedData = [...data].sort((a, b) => {
+    if (sort === "rating") {
+      return b.avg_rating - a.avg_rating;
+    } else if (sort === "date_up") {
+      return a.published_date - b.published_date;
+    } else if (sort === "date_down") {
+      return b.published_date - a.published_date;
+    } else if (sort === "a_to_z") {
+      return a.title.localeCompare(b.title);
+    } else if (sort === "z_to_a") {
+      return b.title.localeCompare(a.title);
+    }
+  });
+
   const startResult = (currentPage - 1) * booksPerPage + 1;
   const endResult = Math.min(currentPage * booksPerPage, totalBooks);
+  const paginatedData = sortedData.slice(
+    (currentPage - 1) * booksPerPage,
+    currentPage * booksPerPage
+  );
 
   return (
     <>
@@ -101,13 +119,18 @@ function ResultPage() {
           <div className="flex-1 flex flex-col px-6 lg:pr-12 xl:pr-20 gap-8 md:gap-8">
             <div className="flex justify-between items-center">
               <h1 className="text-xl md:text-2xl">
-                Keyword Search: <span className="font-extrabold">{query}</span>
+                Từ khóa tìm kiếm:{" "}
+                <span className="font-extrabold">{query}</span>
               </h1>
-              <Sort />
+              <div className="flex gap-3 items-center">
+                <span className="text-lg text-muted-foreground">Sắp xếp:</span>
+                <Sort />
+              </div>
             </div>
 
             <div className="text-lg text-muted-foreground">
-              Showing {startResult} to {endResult} of {totalBooks} results
+              Hiển thị từ {startResult} đến {endResult} của tổng {totalBooks}{" "}
+              kết quả
             </div>
 
             <div className="block lg:hidden">
@@ -117,16 +140,13 @@ function ResultPage() {
             <Separator className="bg-foreground" />
 
             <div className="flex flex-col gap-6 md:gap-10">
-              {Array.from({
-                length: Math.min(booksPerPage, endResult - startResult + 1),
-              }).map((_, index) => (
-                <React.Fragment key={index}>
-                  <BookSearchResult bookData={bookData} />
-                  {index < Math.min(booksPerPage, endResult - startResult) && (
-                    <Separator className="bg-foreground" />
-                  )}
+              {paginatedData.map((book) => (
+                <React.Fragment key={book.id}>
+                  <BookSearchResult bookData={book} />
+                  <Separator className="bg-foreground" />
                 </React.Fragment>
               ))}
+              ;
             </div>
 
             <Pagination>

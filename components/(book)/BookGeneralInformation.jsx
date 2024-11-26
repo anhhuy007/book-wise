@@ -32,7 +32,7 @@ function BookGeneralInformation({ bookData }) {
             {bookData.title}
           </h1>
           <h2 className="text-lg xl:text-2xl font-semibold">
-            Written by: {bookData.author}
+            Written by: {bookData.authors}
           </h2>
           <p className="text-lg xl:text-2xl">{bookData.category}</p>
           <div className="flex flex-col gap-2 md:flex-row md:space-x-2 ">
@@ -62,7 +62,7 @@ function BookGeneralInformation({ bookData }) {
               })}
             </div>
             <div className="flex gap-2">
-              <span>{bookData.avg_rating.toFixed(1)}</span>
+              <span>{bookData.avg_rating}</span>
               <span>({bookData.rating_count})</span>
             </div>
           </div>
@@ -107,10 +107,10 @@ export function BookSearchResult({ bookData }) {
         {/* Book Information */}
         <div className="flex flex-col gap-1 md:gap-2 lg:gap-3 xl:gap-5">
           <h1 className="text-lg md:text-xl xl:text-2xl font-semibold">
-            {bookData.title} ({publishedYear})
+            {bookData.title}
           </h1>
           <h2 className="text-lg md:text-xl font-semibold">
-            By: {bookData.author}
+            By: {bookData.authors}
           </h2>
           <p className="text-lg md:text-xl">{bookData.category}</p>
           <div className="flex gap-2 items-center md:space-x-2 ">
@@ -140,7 +140,7 @@ export function BookSearchResult({ bookData }) {
               })}
             </div>
             <div className="flex gap-2 ">
-              <span className=" text-lg">{bookData.avg_rating.toFixed(1)}</span>
+              <span className=" text-lg">{bookData.avg_rating}</span>
               <span className=" text-lg">({bookData.rating_count})</span>
             </div>
           </div>
