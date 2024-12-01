@@ -2,7 +2,11 @@
 
 import BookCarousel from "@/components/(home-page)/BookCarousel";
 import BookBannerCarousel from "@/components/(home-page)/BookBannerCarousel";
-import { getBestSeller, getYouMightLike, getPeopleAlsoViewed } from "@/app/services/Services";
+import {
+  getBestSeller,
+  getYouMightLike,
+  getPeopleAlsoViewed,
+} from "@/app/services/Services";
 
 export default async function Page() {
   const best_seller = await getBestSeller();

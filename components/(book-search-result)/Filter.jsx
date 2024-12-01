@@ -17,9 +17,13 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/router";
 
-function Filter({ filters: initialFilters, onApplyFilters }) {
+function Filter({
+  filters: initialFilters,
+  onApplyFilters,
+  disabledFields = {},
+  ...props
+}) {
   const currentYear = new Date().getFullYear();
   const [filters, setFilters] = useState({
     category: initialFilters.category || "",
@@ -74,6 +78,7 @@ function Filter({ filters: initialFilters, onApplyFilters }) {
                   onChange={(e) =>
                     setFilters({ ...filters, authorName: e.target.value })
                   }
+                  disabled={disabledFields.author}
                 />
               </div>
               <div>
@@ -112,19 +117,26 @@ function Filter({ filters: initialFilters, onApplyFilters }) {
               <div>
                 <Label htmlFor="category">Thể loại</Label>
                 <Select
-                  value={filters.category}
                   onValueChange={(value) =>
                     setFilters({ ...filters, category: value })
                   }
+                  disabled={disabledFields.category}
                 >
                   <SelectTrigger id="category">
-                    <SelectValue placeholder="Chọn thể loại" />
+                    <SelectValue
+                      placeholder={
+                        disabledFields ? filters.category : "Chọn thể loại"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="fiction">Tiểu thuyết</SelectItem>
                     <SelectItem value="non-fiction">Phi hư cấu</SelectItem>
                     <SelectItem value="science">Khoa học</SelectItem>
                     <SelectItem value="history">Lịch sử</SelectItem>
+                    <SelectItem value="self-development">
+                      Phát triển bản thân
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -6,9 +6,9 @@ import BookGeneralInformation from "@/components/(book)/BookGeneralInformation";
 import { Separator } from "@/components/ui/separator";
 import AboutSection from "@/components/(book)/AboutSection";
 import OpinionSection from "@/components/(book)/OpinionSection";
-import useSWR from 'swr'
+import useSWR from "swr";
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const bookData = {
   created_at: "2024-11-02T18:33:58.986Z",
@@ -27,13 +27,13 @@ const bookData = {
 
 function BookDetail({ params }) {
   const { bookId } = React.use(params);
-  const { data, error, isLoading } = useSWR(`/api/books/${bookId}`, fetcher)
+  const { data, error, isLoading } = useSWR(`/api/books/${bookId}`, fetcher);
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error</div>
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
 
-  const bookData = data[0]
-  console.log("Book Data: ", bookData)
+  const bookData = data[0];
+  console.log("Book Data: ", bookData);
   return (
     <>
       <div className="flex flex-col p-2 xl:p-20 xl:pr-40 gap-20">

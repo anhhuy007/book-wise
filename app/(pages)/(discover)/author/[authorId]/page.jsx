@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import Filter from "@/components/(book-search-result)/Filter";
+import FilterSheet from "@/components/(book-search-result)/FilterSheet";
+import Sort from "@/components/(book-search-result)/Sort";
 import { Separator } from "@/components/ui/separator";
 import { BookSearchResult } from "@/components/(book)/BookGeneralInformation";
-import useSWR from "swr";
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
 import {
   Pagination,
   PaginationContent,
@@ -17,32 +17,62 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
-import Sort from "@/components/(book-search-result)/Sort";
-import Filter from "@/components/(book-search-result)/Filter";
-import FilterSheet from "@/components/(book-search-result)/FilterSheet";
 
-function ResultPage() {
-  //
+const authorData = {
+  name: "James Clear",
+  img_url:
+    "https://image.slidesharecdn.com/nhagiakim-161103070024/95/nh-gi-kim-the-alchemist-1-638.jpg?cb=1478156544",
+  bio: "James Clear is an author, speaker, and expert on habits, decision-making, and continuous improvement. He is the author of the New York Times bestseller, Atomic Habits.",
+  book_count: 2,
+  books: [
+    {
+      id: "1",
+      title: "Atomic Habits",
+      img_url:
+        "https://image.slidesharecdn.com/nhagiakim-161103070024/95/nh-gi-kim-the-alchemist-1-638.jpg?cb=1478156544",
+      avg_rating: 4.8,
+      published_date: "2018-10-16T00:00:00.000Z",
+      category: "Self-Development",
+      rating_count: 158432,
+      authors: "James Clear",
+    },
+    {
+      id: "2",
+      title: "The Alchemist",
+      img_url:
+        "https://image.slidesharecdn.com/nhagiakim-161103070024/95/nh-gi-kim-the-alchemist-1-638.jpg?cb=1478156544",
+      avg_rating: 4.5,
+      published_date: "2018-10-16T00:00:00.000Z",
+      category: "Self-Development",
+      rating_count: 158432,
+      authors: "James Clear",
+    },
+  ],
+};
+
+function AuthorDetail({ params }) {
+  const { authorId } = React.use(params);
   const searchParams = useSearchParams();
-  const searchType = searchParams.get("type");
-  const query = searchParams.get("q");
   const [sort, setSort] = useState(searchParams.get("sort") || "rating");
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get("page")) || 1
   );
+
+  // const { authorId } = React.use(params);
+  // const { data, error, isLoading } = useSWR(
+  //   `/api/authors/${authorId}`,
+  //   fetcher
+  // );
+
+  const data = authorData.books;
   const [filters, setFilters] = useState({
     category: "",
-    authorName: "",
+    authorName: `${authorData.name}`,
     startYear: "1900",
     endYear: new Date().getFullYear().toString(),
     ratingRange: [0, 5],
-    language: "",
+    languae: "",
   });
-
-  const { data, error, isLoading } = useSWR(
-    `/api/search?type=${searchType}&q=${query}`,
-    fetcher
-  );
 
   useEffect(() => {
     setCurrentPage(Number(searchParams.get("page")) || 1);
@@ -53,8 +83,8 @@ function ResultPage() {
     console.log("Sort type changed: ", sort);
   }, [searchParams]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error</div>;
+  // if (isLoading) return <div>Loading...</div>;
+  // if (error) return <div>Error</div>;
 
   const totalBooks = data.length;
   const booksPerPage = 5;
@@ -77,10 +107,7 @@ function ResultPage() {
       ) {
         items.push(
           <PaginationItem key={i}>
-            <PaginationLink
-              href={`?type=${searchType}&q=${query}&sort=${sort}&page=${i}`}
-              isActive={currentPage === i}
-            >
+            <PaginationLink href={`?page=${i}`} isActive={currentPage === i}>
               {i}
             </PaginationLink>
           </PaginationItem>
@@ -132,7 +159,11 @@ function ResultPage() {
       <div className="flex min-h-screen">
         <div className="hidden lg:block w-64 relative">
           <div className="sticky ml-4 top-[150px]">
-            <Filter filters={filters} onApply={handleApplyFilters} />
+            <Filter
+              filters={filters}
+              onApply={handleApplyFilters}
+              disabledFields={{ author: true }}
+            />
           </div>
         </div>
         <div className="flex-1 flex gap-10 lg:ml-[200px]">
@@ -140,8 +171,8 @@ function ResultPage() {
           <div className="flex-1 flex flex-col px-6 lg:pr-12 xl:pr-20 gap-8 md:gap-8">
             <div className="flex justify-between items-center">
               <h1 className="text-xl md:text-2xl">
-                Từ khóa tìm kiếm:{" "}
-                <span className="font-extrabold">{query}</span>
+                Tác giả:{" "}
+                <span className="font-extrabold">{authorData.name}</span>
               </h1>
               <div className="flex gap-3 items-center">
                 <span className="text-lg text-muted-foreground">Sắp xếp:</span>
@@ -155,7 +186,11 @@ function ResultPage() {
             </div>
 
             <div className="block lg:hidden">
-              <FilterSheet filters={filters} onApply={handleApplyFilters} />
+              <FilterSheet
+                filters={filters}
+                onApply={handleApplyFilters}
+                disabledFields={{ author: true }}
+              />
             </div>
 
             <Separator className="bg-foreground" />
@@ -174,20 +209,14 @@ function ResultPage() {
               <PaginationContent>
                 <PaginationItem>
                   <PaginationPrevious
-                    href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.max(
-                      1,
-                      currentPage - 1
-                    )}`}
+                    href={`?page=${Math.max(1, currentPage - 1)}`}
                     aria-disabled={currentPage === 1}
                   />
                 </PaginationItem>
                 {renderPaginationItems()}
                 <PaginationItem>
                   <PaginationNext
-                    href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.min(
-                      totalPages,
-                      currentPage + 1
-                    )}`}
+                    href={`?page=${Math.min(totalPages, currentPage + 1)}`}
                     aria-disabled={currentPage === totalPages}
                   />
                 </PaginationItem>
@@ -200,4 +229,4 @@ function ResultPage() {
   );
 }
 
-export default ResultPage;
+export default AuthorDetail;

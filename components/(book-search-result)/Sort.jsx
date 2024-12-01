@@ -29,7 +29,7 @@ const sortOptions = [
 function Sort() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentSort = searchParams.get("sort") || "Sắp xếp";
+  const currentSort = searchParams.get("sort") || "rating";
 
   const handleSortChange = (value) => {
     const params = new URLSearchParams(searchParams.toString());
