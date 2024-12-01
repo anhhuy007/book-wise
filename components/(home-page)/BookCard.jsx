@@ -1,15 +1,21 @@
 import { StarFilledIcon } from "@radix-ui/react-icons";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 const BookCard = ({
   img_url,
   title,
-  author,
+  authors,
   avg_rating,
   rating_count,
   category,
   id,
 }) => {
+  const [dynamicRating, setDynamicRating] = useState(avg_rating);
+  useEffect(() => {
+    setDynamicRating((avg_rating % 5) + Math.random());
+  }, [avg_rating]);
+
   return (
     <Link href={`/book/${id}`}>
       <div className="flex flex-col items-start w-full max-w-[210px] group">
@@ -35,7 +41,7 @@ const BookCard = ({
             <div className="flex flex-row gap-2 items-center w-full">
               <StarFilledIcon size={16} color="#FFD700" />
               <span className="text-xs font-semibold text-gray-600">
-                {((avg_rating % 5) + Math.random()).toFixed(1)}
+                {dynamicRating.toFixed(1)}
               </span>
               <span className="text-xs font-bold text-yellow-300"> · </span>
               <span className="text-xs font-semibold text-gray-500 overflow-hidden">
@@ -50,7 +56,7 @@ const BookCard = ({
               {title}
             </h3>
             <span className="text-sm text-gray-500 block truncate">
-              {author}
+              {authors}
             </span>
           </div>
         </div>

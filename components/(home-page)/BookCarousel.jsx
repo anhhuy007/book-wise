@@ -1,7 +1,5 @@
 "use client";
-
 import React from "react";
-import useSWR from "swr";
 
 import {
   Carousel,
@@ -12,51 +10,21 @@ import {
 } from "@/components/ui/carousel";
 import BookCard from "./BookCard";
 
-// Create fetcher function for SWR
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
-function shuffle(array) {
-  let currentIndex = array.length;
-
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
-    // Pick a remaining element...
-    let randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-
-  return array;
-}
-
-export function BookCarousel() {
-  const { data, error, isLoading } = useSWR(
-    "https://672752d1302d03037e70a402.mockapi.io/book",
-    fetcher
-  );
-
-  if (error) {
-    return (
-      <div className="text-center p-4 text-red-500">
-        Failed to load books. Please try again later.
-      </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <div className="text-center p-4">
-        <div className="animate-pulse">Loading books...</div>
-      </div>
-    );
-  }
-
-  const books = shuffle(data);
+export function BookCarousel({
+  book_data
+}) {
+  // convert book_data (from json array) to array of objects
+  const books = book_data.map((book) => {
+    return {
+      id: book.id,
+      title: book.title,
+      authors: book.authors, 
+      img_url: book.img_url,
+      avg_rating: book.avg_rating,
+      rating_count: book.rating_count,
+      category: book.category
+    };
+  });
 
   return (
     <div className="flex w-full justify-center">

@@ -19,8 +19,8 @@ import {
 } from "lucide-react";
 
 const sortOptions = [
-  { value: "price-up", label: "Giá tăng dần", icon: ArrowUpNarrowWide },
-  { value: "price-down", label: "Giá giảm dần", icon: ArrowDownWideNarrow },
+  { value: "date-up", label: "Năm tăng dần", icon: ArrowUpNarrowWide },
+  { value: "date-down", label: "Năm giảm dần", icon: ArrowDownWideNarrow },
   { value: "rating", label: "Đánh giá cao", icon: Star },
   { value: "a-to-z", label: "A đến Z", icon: ArrowDownAZ },
   { value: "z-to-a", label: "Z đến A", icon: ArrowUpAZ },
@@ -29,7 +29,7 @@ const sortOptions = [
 function Sort() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentSort = searchParams.get("sort") || "";
+  const currentSort = searchParams.get("sort") || "Sắp xếp";
 
   const handleSortChange = (value) => {
     const params = new URLSearchParams(searchParams.toString());
