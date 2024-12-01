@@ -51,16 +51,15 @@ const authorData = {
 };
 
 function AuthorDetail({ params }) {
-  const { authorId } = React.use(params);
   const searchParams = useSearchParams();
   const [sort, setSort] = useState(searchParams.get("sort") || "rating");
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get("page")) || 1
   );
 
-  // const { authorId } = React.use(params);
+  // const { authorName } = React.use(params);
   // const { data, error, isLoading } = useSWR(
-  //   `/api/authors/${authorId}`,
+  //   `/api/authors/${authorName}`
   //   fetcher
   // );
 

@@ -286,8 +286,8 @@ function CategoryDetail({ params }) {
     Number(searchParams.get("page")) || 1
   );
 
-  // const { categoryId } = React.use(params);
-  // const { data, error, isLoading } = useSWR(`/api/categories/${categoryId}`, fetcher);
+  // const { categoryName } = React.use(params);
+  // const { data, error, isLoading } = useSWR(`/api/categories/${categoryName}`, fetcher);
 
   const data = categoryData.books;
   const [filters, setFilters] = useState({

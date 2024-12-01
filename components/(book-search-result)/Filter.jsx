@@ -125,7 +125,9 @@ function Filter({
                   <SelectTrigger id="category">
                     <SelectValue
                       placeholder={
-                        disabledFields ? filters.category : "Chọn thể loại"
+                        disabledFields.category
+                          ? filters.category
+                          : "Chọn thể loại"
                       }
                     />
                   </SelectTrigger>

@@ -10,21 +10,6 @@ import useSWR from "swr";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-const bookData = {
-  created_at: "2024-11-02T18:33:58.986Z",
-  title: "Atomic Habits",
-  img_url:
-    "https://image.slidesharecdn.com/nhagiakim-161103070024/95/nh-gi-kim-the-alchemist-1-638.jpg?cb=1478156544",
-  author: "James Clear",
-  published_year: "2018-10-16T00:00:00.000Z",
-  category: "Self-Development",
-  avg_rating: 4.8,
-  rating_count: 158432,
-  description:
-    "A revolutionary system to get 1% better every day. Learn how tiny changes can lead to remarkable results in this practical guide to habit formation and behavior change.",
-  id: "2",
-};
-
 function BookDetail({ params }) {
   const { bookId } = React.use(params);
   const { data, error, isLoading } = useSWR(`/api/books/${bookId}`, fetcher);
@@ -34,6 +19,7 @@ function BookDetail({ params }) {
 
   const bookData = data[0];
   console.log("Book Data: ", bookData);
+
   return (
     <>
       <div className="flex flex-col p-2 xl:p-20 xl:pr-40 gap-20">

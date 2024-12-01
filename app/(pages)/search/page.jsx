@@ -148,10 +148,19 @@ function ResultPage() {
                 <Sort />
               </div>
             </div>
-
             <div className="text-lg text-muted-foreground">
-              Hiển thị từ {startResult} đến {endResult} của tổng {totalBooks}{" "}
-              kết quả
+              {totalBooks === 0 ? (
+                <>
+                  <span>Không có kết quả nào</span>
+                  <br />
+                  <span>Hãy thử tìm kiếm bằng từ khóa khác</span>
+                </>
+              ) : (
+                <span>
+                  Hiển thị từ {startResult} đến {endResult} của tổng{" "}
+                  {totalBooks} kết quả.
+                </span>
+              )}
             </div>
 
             <div className="block lg:hidden">
@@ -167,32 +176,33 @@ function ResultPage() {
                   <Separator className="bg-foreground" />
                 </React.Fragment>
               ))}
-              ;
             </div>
 
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.max(
-                      1,
-                      currentPage - 1
-                    )}`}
-                    aria-disabled={currentPage === 1}
-                  />
-                </PaginationItem>
-                {renderPaginationItems()}
-                <PaginationItem>
-                  <PaginationNext
-                    href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.min(
-                      totalPages,
-                      currentPage + 1
-                    )}`}
-                    aria-disabled={currentPage === totalPages}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+            {totalBooks > 0 && (
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious
+                      href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.max(
+                        1,
+                        currentPage - 1
+                      )}`}
+                      aria-disabled={currentPage === 1}
+                    />
+                  </PaginationItem>
+                  {renderPaginationItems()}
+                  <PaginationItem>
+                    <PaginationNext
+                      href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.min(
+                        totalPages,
+                        currentPage + 1
+                      )}`}
+                      aria-disabled={currentPage === totalPages}
+                    />
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
+            )}
           </div>
         </div>
       </div>
