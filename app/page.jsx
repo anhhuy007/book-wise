@@ -3,6 +3,7 @@
 import BookCarousel from "@/components/(home-page)/BookCarousel";
 import BookBannerCarousel from "@/components/(home-page)/BookBannerCarousel";
 import { getBestSeller, getYouMightLike, getPeopleAlsoViewed } from "@/app/services/Services";
+import Link from "next/link";
 
 export default async function Page() {
   const best_seller = await getBestSeller();
@@ -11,6 +12,12 @@ export default async function Page() {
 
   return (
     <div className="flex flex-col w-full items-center">
+      <Link href="/signin" className="self-end mr-4 mt-4 text-blue-500 hover:text-blue-800">
+        Signin
+      </Link>
+      <Link href="/profile-setup" className="self-end mr-4 mt-4 text-blue-500 hover:text-blue-800">
+        a
+      </Link>
       <BookBannerCarousel />
 
       <h2 className="text-2xl font-bold self-start mt-10 mb-5">Best Seller</h2>
