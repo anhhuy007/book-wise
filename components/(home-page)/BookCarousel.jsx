@@ -25,9 +25,9 @@ export function BookCarousel({ book_data }) {
   });
 
   return (
-    <div className="w-full justify-center max-w-[1400px]">
+    <div className="w-full justify-center max-w-[85vw] px-12">
       <Carousel>
-        <CarouselContent className="ml-2">
+        <CarouselContent className="ml-1">
           {Array.from({ length: books.length }).map((_, index) => (
             <CarouselItem
               key={index}

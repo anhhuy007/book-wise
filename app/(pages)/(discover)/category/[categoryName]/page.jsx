@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import Filter from "@/components/(book-search-result)/Filter";
+import FilterSheet from "@/components/(book-search-result)/FilterSheet";
+import Sort from "@/components/(book-search-result)/Sort";
 import { Separator } from "@/components/ui/separator";
 import { BookSearchResult } from "@/components/(book)/BookGeneralInformation";
-import useSWR from "swr";
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
-
 import {
   Pagination,
   PaginationContent,
@@ -17,31 +17,33 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
-import Sort from "@/components/(book-search-result)/Sort";
-import Filter from "@/components/(book-search-result)/Filter";
-import FilterSheet from "@/components/(book-search-result)/FilterSheet";
+import useSWR from "swr";
 
-function ResultPage() {
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
+function CategoryDetail({ params }) {
+  const { categoryName } = React.use(params);
   const searchParams = useSearchParams();
-  const searchType = searchParams.get("type");
-  const query = searchParams.get("q");
   const [sort, setSort] = useState(searchParams.get("sort") || "rating");
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get("page")) || 1
   );
+
+  const { data, error, isLoading } = useSWR(
+    `/api/search?type=category&q=${categoryName}`,
+    fetcher
+  );
+
+  const name = categoryName.replace(/%20/g, " ").replace(/%26/g, " ");
+
   const [filters, setFilters] = useState({
-    category: "",
+    category: `${name}`,
     authorName: "",
     startYear: "1900",
     endYear: new Date().getFullYear().toString(),
     ratingRange: [0, 5],
     language: "",
   });
-
-  const { data, error, isLoading } = useSWR(
-    `/api/search?type=${searchType}&q=${query}`,
-    fetcher
-  );
 
   useEffect(() => {
     setCurrentPage(Number(searchParams.get("page")) || 1);
@@ -76,10 +78,7 @@ function ResultPage() {
       ) {
         items.push(
           <PaginationItem key={i}>
-            <PaginationLink
-              href={`?type=${searchType}&q=${query}&sort=${sort}&page=${i}`}
-              isActive={currentPage === i}
-            >
+            <PaginationLink href={`?page=${i}`} isActive={currentPage === i}>
               {i}
             </PaginationLink>
           </PaginationItem>
@@ -131,7 +130,11 @@ function ResultPage() {
       <div className="flex min-h-screen">
         <div className="hidden lg:block w-64 relative">
           <div className="sticky ml-4 top-[150px]">
-            <Filter filters={filters} onApply={handleApplyFilters} />
+            <Filter
+              filters={filters}
+              onApply={handleApplyFilters}
+              disabledFields={{ category: true }}
+            />
           </div>
         </div>
         <div className="flex-1 flex gap-10 lg:ml-[200px]">
@@ -139,31 +142,25 @@ function ResultPage() {
           <div className="flex-1 flex flex-col px-6 lg:pr-12 xl:pr-20 gap-8 md:gap-8">
             <div className="flex justify-between items-center">
               <h1 className="text-xl md:text-2xl">
-                Từ khóa tìm kiếm:{" "}
-                <span className="font-extrabold">{query}</span>
+                Thể loại: <span className="font-extrabold">{name}</span>
               </h1>
               <div className="flex gap-3 items-center">
                 <span className="text-lg text-muted-foreground">Sắp xếp:</span>
                 <Sort />
               </div>
             </div>
+
             <div className="text-lg text-muted-foreground">
-              {totalBooks === 0 ? (
-                <>
-                  <span>Không có kết quả nào</span>
-                  <br />
-                  <span>Hãy thử tìm kiếm bằng từ khóa khác</span>
-                </>
-              ) : (
-                <span>
-                  Hiển thị từ {startResult} đến {endResult} của tổng{" "}
-                  {totalBooks} kết quả.
-                </span>
-              )}
+              Hiển thị từ {startResult} đến {endResult} của tổng {totalBooks}{" "}
+              kết quả
             </div>
 
             <div className="block lg:hidden">
-              <FilterSheet filters={filters} onApply={handleApplyFilters} />
+              <FilterSheet
+                filters={filters}
+                onApply={handleApplyFilters}
+                disabledFields={{ category: true }}
+              />
             </div>
 
             <Separator className="bg-foreground" />
@@ -177,31 +174,23 @@ function ResultPage() {
               ))}
             </div>
 
-            {totalBooks > 0 && (
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.max(
-                        1,
-                        currentPage - 1
-                      )}`}
-                      aria-disabled={currentPage === 1}
-                    />
-                  </PaginationItem>
-                  {renderPaginationItems()}
-                  <PaginationItem>
-                    <PaginationNext
-                      href={`?type=${searchType}&q=${query}&sort=${sort}&page=${Math.min(
-                        totalPages,
-                        currentPage + 1
-                      )}`}
-                      aria-disabled={currentPage === totalPages}
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            )}
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href={`?page=${Math.max(1, currentPage - 1)}`}
+                    aria-disabled={currentPage === 1}
+                  />
+                </PaginationItem>
+                {renderPaginationItems()}
+                <PaginationItem>
+                  <PaginationNext
+                    href={`?page=${Math.min(totalPages, currentPage + 1)}`}
+                    aria-disabled={currentPage === totalPages}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           </div>
         </div>
       </div>
@@ -209,4 +198,4 @@ function ResultPage() {
   );
 }
 
-export default ResultPage;
+export default CategoryDetail;

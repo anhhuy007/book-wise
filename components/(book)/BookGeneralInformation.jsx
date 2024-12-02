@@ -6,30 +6,30 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 function BookGeneralInformation({ bookData }) {
-  if (!bookData) {
-    return <div>Loading...</div>;
-  }
   const [isExpanded, setIsExpanded] = useState(false);
   const [showToggle, setShowToggle] = useState(false);
   const descriptionRef = useRef(null);
 
-  const fullStars = Math.floor(bookData.avg_rating);
-  const hasHalfStar = bookData.avg_rating % 1 !== 0;
-
   useEffect(() => {
-    if (descriptionRef.current) {
+    if (descriptionRef.current && bookData?.description) {
       const descriptionHeight = descriptionRef.current.scrollHeight;
       setShowToggle(descriptionHeight > 300);
     }
-  }, [bookData.description]);
+  }, [bookData?.description]);
+
+  if (!bookData) {
+    return <div>Loading...</div>;
+  }
+
+  const fullStars = Math.floor(bookData.avg_rating);
+  const hasHalfStar = bookData.avg_rating % 1 !== 0;
 
   const toggleDescription = () => {
     setIsExpanded((prev) => !prev);
   };
-
   return (
     <>
-      <div className="flex gap-5 md:gap-10">
+      <div className="flex gap-5 md:gap-24">
         {/* Book cover */}
         <Image
           src={bookData.img_url}
@@ -99,7 +99,7 @@ function BookGeneralInformation({ bookData }) {
               isExpanded ? "max-h-[none]" : "max-h-[300px]"
             }`}
           >
-            <p className="md:text-2xl whitespace-pre-line">
+            <p className="md:text-xl whitespace-pre-line">
               {bookData.description}
             </p>
             {!isExpanded && showToggle && (
@@ -117,7 +117,7 @@ function BookGeneralInformation({ bookData }) {
         </div>
       </div>
       <span className="my-10 pr-3 text-center md:hidden">
-        <p>"{bookData.description}"</p>
+        <p>{bookData.description}</p>
       </span>
     </>
   );
@@ -142,7 +142,6 @@ export function BookSearchResult({ bookData }) {
           height={400}
           className="
             w-full h-auto object-cover
-            aspect-[3/4] 
             max-w-[120px]
             md:w-1/3 md:max-w-[150px]
             lg:w-1/4 lg:max-w-[170px]

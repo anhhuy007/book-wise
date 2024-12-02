@@ -17,56 +17,29 @@ import {
   PaginationPrevious,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
+import useSWR from "swr";
 
-const authorData = {
-  name: "James Clear",
-  img_url:
-    "https://image.slidesharecdn.com/nhagiakim-161103070024/95/nh-gi-kim-the-alchemist-1-638.jpg?cb=1478156544",
-  bio: "James Clear is an author, speaker, and expert on habits, decision-making, and continuous improvement. He is the author of the New York Times bestseller, Atomic Habits.",
-  book_count: 2,
-  books: [
-    {
-      id: "1",
-      title: "Atomic Habits",
-      img_url:
-        "https://image.slidesharecdn.com/nhagiakim-161103070024/95/nh-gi-kim-the-alchemist-1-638.jpg?cb=1478156544",
-      avg_rating: 4.8,
-      published_date: "2018-10-16T00:00:00.000Z",
-      category: "Self-Development",
-      rating_count: 158432,
-      authors: "James Clear",
-    },
-    {
-      id: "2",
-      title: "The Alchemist",
-      img_url:
-        "https://image.slidesharecdn.com/nhagiakim-161103070024/95/nh-gi-kim-the-alchemist-1-638.jpg?cb=1478156544",
-      avg_rating: 4.5,
-      published_date: "2018-10-16T00:00:00.000Z",
-      category: "Self-Development",
-      rating_count: 158432,
-      authors: "James Clear",
-    },
-  ],
-};
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 function AuthorDetail({ params }) {
+  const { authorName } = React.use(params);
   const searchParams = useSearchParams();
   const [sort, setSort] = useState(searchParams.get("sort") || "rating");
   const [currentPage, setCurrentPage] = useState(
     Number(searchParams.get("page")) || 1
   );
 
-  // const { authorName } = React.use(params);
-  // const { data, error, isLoading } = useSWR(
-  //   `/api/authors/${authorName}`
-  //   fetcher
-  // );
+  const { data, error, isLoading } = useSWR(
+    `/api/search?type=author&q=${authorName}`,
+    fetcher
+  );
 
-  const data = authorData.books;
+  const name = authorName.replace(/%20/g, " ");
+  console.log("Author Name: ", name);
+
   const [filters, setFilters] = useState({
     category: "",
-    authorName: `${authorData.name}`,
+    authorName: `${name}`,
     startYear: "1900",
     endYear: new Date().getFullYear().toString(),
     ratingRange: [0, 5],
@@ -80,10 +53,10 @@ function AuthorDetail({ params }) {
   useEffect(() => {
     setSort(searchParams.get("sort") || "rating");
     console.log("Sort type changed: ", sort);
-  }, [searchParams]);
+  }, [searchParams, sort]);
 
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>Error</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
 
   const totalBooks = data.length;
   const booksPerPage = 5;
@@ -170,8 +143,7 @@ function AuthorDetail({ params }) {
           <div className="flex-1 flex flex-col px-6 lg:pr-12 xl:pr-20 gap-8 md:gap-8">
             <div className="flex justify-between items-center">
               <h1 className="text-xl md:text-2xl">
-                Tác giả:{" "}
-                <span className="font-extrabold">{authorData.name}</span>
+                Tác giả: <span className="font-extrabold">{name}</span>
               </h1>
               <div className="flex gap-3 items-center">
                 <span className="text-lg text-muted-foreground">Sắp xếp:</span>
@@ -201,7 +173,6 @@ function AuthorDetail({ params }) {
                   <Separator className="bg-foreground" />
                 </React.Fragment>
               ))}
-              ;
             </div>
 
             <Pagination>
