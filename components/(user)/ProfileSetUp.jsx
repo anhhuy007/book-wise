@@ -18,6 +18,24 @@ export default function ProfileSetupForm() {
     preferredLanguage: []
   })
 
+  const schools = [
+    "Đại học Khoa học tự nhiên",
+    "Đại học Bách Khoa",
+    "Đại học Công nghệ thông tin",
+    "Đại học FPT",
+    "Đại học Ngoại thương",
+    "Khác"
+  ]
+  
+  const faculties = [
+    "Công nghệ thông tin",
+    "Điện tử viễn thông",
+    "Toán - Tin học",
+    "Môi trường",
+    "Vật lý",
+    "Khác"
+  ]
+
   const steps = [
     {
       title: "Thông tin cá nhân",
@@ -40,7 +58,6 @@ export default function ProfileSetupForm() {
                 <option value="">Chọn giới tính</option>
                 <option value="male">Nam</option>
                 <option value="female">Nữ</option>
-                <option value="other">Khác</option>
               </select>
             </div>
             <div>
@@ -68,25 +85,35 @@ export default function ProfileSetupForm() {
         >
           <div>
             <label className="block text-foreground mb-2">Trường</label>
-            <input 
-              type="text"
+            <select 
               className="w-full px-4 py-3 rounded-[var(--radius)] bg-background border border-input"
               value={formData.school}
-              onChange={(e) => setFormData({...formData, school: e.target.value})}
-              placeholder="Tên trường của bạn"
-              required
-            />
+              onChange={(e) => {
+                const value = e.target.value
+                setFormData({...formData, school: value})
+              }}
+            >
+              <option value="">Chọn trường</option>
+              {schools.map((school) => (
+                <option key={school} value={school}>{school}</option>
+              ))}
+            </select>
           </div>
           <div>
             <label className="block text-foreground mb-2">Khoa</label>
-            <input 
-              type="text"
+            <select 
               className="w-full px-4 py-3 rounded-[var(--radius)] bg-background border border-input"
               value={formData.faculty}
-              onChange={(e) => setFormData({...formData, faculty: e.target.value})}
-              placeholder="Khoa của bạn"
-              required
-            />
+              onChange={(e) => {
+                const value = e.target.value
+                setFormData({...formData, faculty: value})
+              }}
+            >
+              <option value="">Chọn khoa</option>
+              {faculties.map((faculty) => (
+                <option key={faculty} value={faculty}>{faculty}</option>
+              ))}
+            </select>
           </div>
         </motion.div>
       )
@@ -151,8 +178,6 @@ export default function ProfileSetupForm() {
               >
                 <option value="vietnamese">Tiếng Việt</option>
                 <option value="english">Tiếng Anh</option>
-                <option value="chinese">Tiếng Trung</option>
-                <option value="japanese">Tiếng Nhật</option>
               </select>
             </div>
           </div>
@@ -193,7 +218,7 @@ export default function ProfileSetupForm() {
       setStep(step + 1)
     }
   }
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-20">
       <motion.div 
