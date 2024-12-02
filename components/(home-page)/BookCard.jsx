@@ -18,7 +18,7 @@ const BookCard = ({
 
   return (
     <Link href={`/book/${id}`}>
-      <div className="flex flex-col items-start w-full max-w-[210px] group">
+      <div className="flex flex-col items-center w-full max-w-[230px] group">
         {/* Card container with hover effects */}
         <div
           className="w-full transition-all duration-300 ease-in-out transform 

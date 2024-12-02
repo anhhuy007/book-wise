@@ -23,14 +23,13 @@ function BookDetail({ params }) {
   return (
     <>
       <div className="flex flex-col p-2 xl:p-20 xl:pr-40 gap-20">
-        <div className="flex flex-col xl:flex-row justify-between w-full space-x-4">
-          {/* Left Column - Book Cover and Information */}
+        {/* <div className="flex flex-col xl:flex-row justify-between w-full space-x-4">
           <BookGeneralInformation bookData={bookData} />
-          {/* Right Column - Book Available Status */}
           <div className="flex justify-center items-center xl:items-start xl:flex-shrink-0">
             <BookAvailableStatus bookData={bookData} />
           </div>
-        </div>
+        </div> */}
+        <BookGeneralInformation bookData={bookData} />
         <Separator className="bg-foreground" />
         <AboutSection />
         <Separator className="bg-foreground" />
