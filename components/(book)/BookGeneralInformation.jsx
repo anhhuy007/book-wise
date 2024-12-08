@@ -4,18 +4,23 @@ import { Star, StarHalf, Eye, Heart, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
+import { Card } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 function BookGeneralInformation({ bookData }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [showToggle, setShowToggle] = useState(false);
-  const descriptionRef = useRef(null);
+  const [isLiked, setIsLiked] = useState(false);
 
-  useEffect(() => {
-    if (descriptionRef.current && bookData?.description) {
-      const descriptionHeight = descriptionRef.current.scrollHeight;
-      setShowToggle(descriptionHeight > 300);
-    }
-  }, [bookData?.description]);
+  const handleLike = () => {
+    setIsLiked((prev) => !prev);
+  };
 
   if (!bookData) {
     return <div>Loading...</div>;
@@ -24,101 +29,143 @@ function BookGeneralInformation({ bookData }) {
   const fullStars = Math.floor(bookData.avg_rating);
   const hasHalfStar = bookData.avg_rating % 1 !== 0;
 
-  const toggleDescription = () => {
-    setIsExpanded((prev) => !prev);
-  };
   return (
     <>
-      <div className="flex gap-5 md:gap-24">
-        {/* Book cover */}
-        <Image
-          src={bookData.img_url}
-          alt={bookData.title}
-          width={300}
-          height={400}
-          className="
-            w-full object-cover
-            aspect-[3/4] 
-            max-w-[150px]
-            md:w-1/3 md:max-w-[250px]
-            lg:w-1/4 lg:max-w-[350px]
-            xl:w-5/12 xl:max-w-[450px]
-            h-[650px]
-            border-2 rounded-xl
-          "
-        />
-        {/* Book Information */}
-        <div className="flex flex-1 flex-col gap-1 md:gap-5 space-y-4">
-          <h1 className="text-2xl xl:text-5xl font-semibold xl:font-extrabold">
-            {bookData.title}
-          </h1>
-          <Link href={`/author/${bookData.authors}`}>
-            <h2 className="text-lg xl:text-3xl font-semibold text-blue-500 hover:underline">
-              Được viết bởi: {bookData.authors}
-            </h2>
-          </Link>
-          <Link href={`/category/${bookData.category}`}>
-            <p className="text-lg xl:text-3xl font-semibold text-blue-500 hover:underline">
-              {bookData.category}
-            </p>
-          </Link>
-          <div className="flex flex-col gap-2 md:flex-row md:space-x-2 items-center">
-            <div className="flex">
-              {[...Array(5)].map((_, index) => {
-                if (index < fullStars) {
-                  return (
-                    <Star
-                      key={index}
-                      size={16}
-                      className="text-yellow-400 fill-current"
-                    />
-                  );
-                } else if (index === fullStars && hasHalfStar) {
-                  return (
-                    <StarHalf
-                      key={index}
-                      size={16}
-                      className="text-yellow-400 fill-current"
-                    />
-                  );
-                } else {
-                  return (
-                    <Star key={index} size={16} className="text-gray-300" />
-                  );
-                }
-              })}
+      <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
+        {/* Book Cover */}
+        <div className="relative aspect-[3/4] overflow-hidden rounded-lg border bg-muted">
+          <Image
+            src={bookData.img_url}
+            alt={bookData.title}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+
+        {/* Book Details */}
+        <div className="space-y-6">
+          <div className="flex justify-between items-start">
+            <div className="space-y-1">
+              <h1 className="text-4xl font-bold tracking-tight">
+                {bookData.title}
+              </h1>
+              <div className="text-sm text-muted-foreground space-x-2">
+                <span>ISBN: {bookData.isbn}</span>
+                <span>•</span>
+                <span>{bookData.pages} Pages</span>
+                <span>•</span>
+                <span>Language: {bookData.language}</span>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <span>{bookData.avg_rating}</span>
-              <span>({bookData.rating_count})</span>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+              onClick={handleLike}
+            >
+              {isLiked ? (
+                <Heart className="h-5 w-5 " />
+              ) : (
+                <Heart className="h-5 w-5 text-red-500" />
+              )}
+            </Button>
+          </div>
+
+          <div className="space-y-2">
+            <Link href={`/author/${bookData.authors}`}>
+              <h2 className="text-xl font-semibold hover:underline">
+                by {bookData.authors}
+              </h2>
+            </Link>
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-muted-foreground">
+                Category: {bookData.category}
+              </span>
+              <span>•</span>
+              <span className="text-sm text-muted-foreground">
+                Published: {bookData.published_year}
+              </span>
             </div>
           </div>
-          <div
-            ref={descriptionRef}
-            className={`relative overflow-hidden transition-all duration-300 ${
-              isExpanded ? "max-h-[none]" : "max-h-[300px]"
-            }`}
-          >
-            <p className="md:text-xl whitespace-pre-line">
+
+          <Card className="p-4 bg-muted/50 flex flex-col">
+            <p className="text-sm leading-relaxed line-clamp-6">
               {bookData.description}
             </p>
-            {!isExpanded && showToggle && (
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white to-transparent h-16 pointer-events-none" />
-            )}
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="link" className="">
+                  Read more
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="text-pretty">
+                <DialogHeader>
+                  <DialogTitle>Full Description</DialogTitle>
+                </DialogHeader>
+                {bookData.description}
+              </DialogContent>
+            </Dialog>
+          </Card>
+
+          <div className="space-y-4">
+            <div className="flex items-center space-x-4 ">
+              <div className="text-2xl font-bold">
+                <div className="flex">
+                  {[...Array(5)].map((_, index) => {
+                    if (index < fullStars) {
+                      return (
+                        <Star
+                          key={index}
+                          size={16}
+                          className="text-yellow-400 fill-current"
+                        />
+                      );
+                    } else if (index === fullStars && hasHalfStar) {
+                      return (
+                        <StarHalf
+                          key={index}
+                          size={16}
+                          className="text-yellow-400 fill-current"
+                        />
+                      );
+                    } else {
+                      return (
+                        <Star key={index} size={16} className="text-gray-300" />
+                      );
+                    }
+                  })}
+                </div>{" "}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                ({bookData.rating_count} reviews)
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <div className="w-32">
+                <input
+                  type="number"
+                  min="1"
+                  defaultValue={1}
+                  className="w-full px-3 py-2 border rounded-md"
+                />
+              </div>
+              <Button className="flex-1" size="lg">
+                Add To Cart
+              </Button>
+            </div>
+            <div className="flex flex-1 items-center w-full space-x-4">
+              <Button size="lg" className="flex-1">
+                Preview
+              </Button>
+              <Button size="lg" variant="outline" className="flex-1">
+                Add to favorite
+              </Button>
+            </div>
           </div>
-          {showToggle && (
-            <button
-              className="mt-2 text-blue-500 hover:underline self-end"
-              onClick={toggleDescription}
-            >
-              {isExpanded ? "Thu gọn" : "Đọc thêm"}
-            </button>
-          )}
         </div>
       </div>
-      <span className="my-10 pr-3 text-center md:hidden">
-        <p>{bookData.description}</p>
-      </span>
     </>
   );
 }
