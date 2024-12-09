@@ -20,9 +20,11 @@ function BookDetail({ params }) {
   const bookData = data[0];
   console.log("Book Data: ", bookData);
 
+  console.log(data);
+
   return (
     <>
-      <div className="flex flex-col p-2 xl:p-20 xl:pr-40 gap-20">
+      <div className="flex flex-col xl:mx-48 gap-20">
         {/* <div className="flex flex-col xl:flex-row justify-between w-full space-x-4">
           <BookGeneralInformation bookData={bookData} />
           <div className="flex justify-center items-center xl:items-start xl:flex-shrink-0">

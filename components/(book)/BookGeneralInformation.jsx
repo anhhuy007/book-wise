@@ -8,8 +8,6 @@ import { Card } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -90,7 +88,7 @@ function BookGeneralInformation({ bookData }) {
           </div>
 
           <Card className="p-4 bg-muted/50 flex flex-col">
-            <p className="text-sm leading-relaxed line-clamp-6">
+            <p className="text-sm leading-relaxed line-clamp-[8]">
               {bookData.description}
             </p>
             <Dialog>
@@ -142,19 +140,7 @@ function BookGeneralInformation({ bookData }) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <div className="w-32">
-                <input
-                  type="number"
-                  min="1"
-                  defaultValue={1}
-                  className="w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <Button className="flex-1" size="lg">
-                Add To Cart
-              </Button>
-            </div>
+            <div className="flex items-center space-x-4"></div>
             <div className="flex flex-1 items-center w-full space-x-4">
               <Button size="lg" className="flex-1">
                 Preview
