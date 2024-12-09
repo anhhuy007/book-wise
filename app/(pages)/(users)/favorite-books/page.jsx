@@ -3,10 +3,8 @@
 import './style.css';
 import React from 'react';
 import useSWR from 'swr';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from 'next/link';
-import { faUser, faEnvelope, faSchool, faChalkboardTeacher, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import BookCard from '@/components/(home-page)/BookCard';
+import LoadingAnimation from '@/components/ui/loading';
 
 // Create fetcher function for SWR
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -60,8 +58,8 @@ export default function FavouriteBooks() {
 
   if (isLoading) {
     return (
-      <div className="text-center p-4">
-        <div className="animate-pulse">Loading books...</div>
+      <div className="flex justify-center items-center min-h-[200px]">
+        <LoadingAnimation />
       </div>
     );
   }
