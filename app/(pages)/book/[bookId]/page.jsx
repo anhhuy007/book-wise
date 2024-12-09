@@ -5,6 +5,7 @@ import useSWR from "swr";
 import BookGeneralInformation from "@/components/(book)/BookGeneralInformation";
 import { Separator } from "@/components/ui/separator";
 import BookCarousel from "@/components/(home-page)/BookCarousel";
+import LoadingAnimation from "@/components/ui/loading";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -16,7 +17,7 @@ function BookDetail({ params }) {
     fetcher
   );
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingAnimation />;
   if (error) return <div>Error</div>;
 
   const bookData = data[0];

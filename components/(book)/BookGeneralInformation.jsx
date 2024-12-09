@@ -8,12 +8,11 @@ import { Card } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import LoadingAnimation from "../ui/loading";
 
 function BookGeneralInformation({ bookData }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -23,7 +22,7 @@ function BookGeneralInformation({ bookData }) {
   };
 
   if (!bookData) {
-    return <div>Loading...</div>;
+    return <LoadingAnimation />
   }
 
   const fullStars = Math.floor(bookData.avg_rating);
@@ -51,11 +50,11 @@ function BookGeneralInformation({ bookData }) {
                 {bookData.title}
               </h1>
               <div className="text-sm text-muted-foreground space-x-2">
-                <span>ISBN: {bookData.isbn}</span>
+                <span>ISBN: {bookData.isbn13}</span>
                 <span>•</span>
-                <span>{bookData.pages} Pages</span>
+                <span>{bookData.page_count} Pages</span>
                 <span>•</span>
-                <span>Language: {bookData.language}</span>
+                <span>Language: {bookData.language == 'en' ? "English" : "Other"}</span>
               </div>
             </div>
             <Button
@@ -84,7 +83,7 @@ function BookGeneralInformation({ bookData }) {
               </span>
               <span>•</span>
               <span className="text-sm text-muted-foreground">
-                Published: {bookData.published_year}
+                Published: {bookData.published_date}
               </span>
             </div>
           </div>
