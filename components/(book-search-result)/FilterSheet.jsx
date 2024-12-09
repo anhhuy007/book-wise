@@ -26,24 +26,24 @@ import {
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 
-export default function FilterSheet() {
+export default function FilterSheet({
+  filters: initialFilters,
+  onApplyFilters,
+  disabledFields = {},
+}) {
   const currentYear = new Date().getFullYear();
-  const [category, setCategory] = useState("");
-  const [authorName, setAuthorName] = useState("");
-  const [startYear, setStartYear] = useState("1900");
-  const [endYear, setEndYear] = useState(currentYear.toString());
-  const [ratingRange, setRatingRange] = useState([0, 5]);
-  const [language, setLanguage] = useState("");
+
+  const [filters, setFilters] = useState({
+    category: initialFilters.category || "",
+    authorName: initialFilters.authorName || "",
+    startYear: initialFilters.startYear || "1900",
+    endYear: initialFilters.endYear || currentYear.toString(),
+    ratingRange: initialFilters.ratingRange || [0, 5],
+    language: initialFilters.language || "",
+  });
 
   const handleApply = () => {
-    console.log("Applied filters:", {
-      yearRange: [parseInt(startYear), parseInt(endYear)],
-      authorName,
-      category,
-      ratingRange,
-      language,
-    });
-    // Here you would typically call a function to apply these filters
+    onApplyFilters(filters);
   };
 
   const handleYearChange = (value, isStart) => {
@@ -86,8 +86,11 @@ export default function FilterSheet() {
                   <Input
                     id="author"
                     placeholder="Nhập tên tác giả"
-                    value={authorName}
-                    onChange={(e) => setAuthorName(e.target.value)}
+                    value={filters.authorName}
+                    onChange={(e) =>
+                      setFilters({ ...filters, authorName: e.target.value })
+                    }
+                    disabled={disabledFields.author}
                   />
                 </div>
                 <div>
@@ -103,7 +106,7 @@ export default function FilterSheet() {
                         min="1000"
                         max={currentYear}
                         placeholder="Từ năm"
-                        value={startYear}
+                        value={filters.startYear}
                         onChange={(e) => handleYearChange(e.target.value, true)}
                       />
                     </div>
@@ -117,7 +120,7 @@ export default function FilterSheet() {
                         min="1000"
                         max={currentYear}
                         placeholder="Đến năm"
-                        value={endYear}
+                        value={filters.endYear}
                         onChange={(e) =>
                           handleYearChange(e.target.value, false)
                         }
@@ -127,9 +130,18 @@ export default function FilterSheet() {
                 </div>
                 <div>
                   <Label htmlFor="category">Thể loại</Label>
-                  <Select value={category} onValueChange={setCategory}>
+                  <Select
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, category: value })
+                    }
+                    disabled={disabledFields.category}
+                  >
                     <SelectTrigger id="category">
-                      <SelectValue placeholder="Chọn thể loại" />
+                      <SelectValue
+                        placeholder={
+                          disabledFields ? filters.category : "Chọn thể loại"
+                        }
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="fiction">Tiểu thuyết</SelectItem>
@@ -150,20 +162,27 @@ export default function FilterSheet() {
                 <div className="space-y-2">
                   <Label>Đánh giá</Label>
                   <div className="flex justify-between">
-                    <span>{ratingRange[0]} sao</span>
-                    <span>{ratingRange[1]} sao</span>
+                    <span>{filters.ratingRange[0]} sao</span>
+                    <span>{filters.ratingRange[1]} sao</span>
                   </div>
                   <Slider
                     min={0}
                     max={5}
                     step={0.5}
-                    value={ratingRange}
-                    onValueChange={setRatingRange}
+                    value={filters.ratingRange}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, ratingRange: value })
+                    }
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="language">Ngôn ngữ</Label>
-                  <Select value={language} onValueChange={setLanguage}>
+                  <Select
+                    value={filters.language}
+                    onValueChange={(value) =>
+                      setFilters({ ...filters, language: value })
+                    }
+                  >
                     <SelectTrigger id="language">
                       <SelectValue placeholder="Chọn ngôn ngữ" />
                     </SelectTrigger>

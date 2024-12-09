@@ -18,7 +18,7 @@ const links = [
   { name: "Thể loại", href: "/category", icon: Library, category: "KHÁM PHÁ" },
   {
     name: "Tác giả",
-    href: "/auth",
+    href: "/author",
     icon: BookUser,
     category: "KHÁM PHÁ",
   },

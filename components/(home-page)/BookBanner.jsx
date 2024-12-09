@@ -10,8 +10,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 export default function BookBanner({
+  id,
   title,
   author,
   description,
@@ -101,10 +103,12 @@ export default function BookBanner({
               </div>
             </div>
             <div className="flex flex-wrap gap-3 mb-4">
-              <Button className="bg-white text-purple-700 hover:bg-yellow-100 transition-colors">
-                <BookOpen className="mr-2 h-4 w-4" />
-                Read Now
-              </Button>
+              <Link href={`/book/${id}`}>
+                <Button className="bg-white text-purple-700 hover:bg-yellow-100 transition-colors">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Read Now
+                </Button>
+              </Link>
               <Button
                 variant="outline"
                 className="bg-white text-purple-700 hover:bg-yellow-100 transition-colors"

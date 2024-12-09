@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import './style.css';
-import React from 'react';
-import useSWR from 'swr';
-import BookCard from '@/components/(home-page)/BookCard';
-import LoadingAnimation from '@/components/ui/loading';
+import "./style.css";
+import React from "react";
+import useSWR from "swr";
+import BookCard from "@/components/(home-page)/BookCard";
+import LoadingAnimation from "@/components/ui/loading";
 
 // Create fetcher function for SWR
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
@@ -30,15 +30,17 @@ function shuffle(array) {
 
 const SlidingContainer = ({ isOpen, book, onClose }) => {
   return (
-      <div className={`sliding-container ${isOpen ? 'open' : ''}`}>
-          <button className="close-button" onClick={onClose}>Close</button>
-          {book && (
-              <>
-                  <h2>{book.title}</h2>
-                  <p>{book.description}</p>
-              </>
-          )}
-      </div>
+    <div className={`sliding-container ${isOpen ? "open" : ""}`}>
+      <button className="close-button" onClick={onClose}>
+        Close
+      </button>
+      {book && (
+        <>
+          <h2>{book.title}</h2>
+          <p>{book.description}</p>
+        </>
+      )}
+    </div>
   );
 };
 
@@ -67,10 +69,10 @@ export default function FavouriteBooks() {
   const books = shuffle(data);
 
   return (
-    <div className='favourite-books'>
+    <div className="favourite-books">
       <div className="container overflow-y-auto">
         <h1>Favourite Books</h1>
-        <div className='grid grid-cols-5 gap-4'>
+        <div className="grid grid-cols-5 gap-4">
           {books.map((book, index) => (
             <div key={index}>
               <BookCard {...book} />

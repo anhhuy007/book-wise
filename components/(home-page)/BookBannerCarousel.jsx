@@ -31,6 +31,7 @@ export default function BookBannerCarousel() {
   }
 
   const banners = data;
+  // console.log("Banners: ", banners);
 
   return (
     <div className="flex flex-row w-full justify-center">

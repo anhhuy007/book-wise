@@ -1,56 +1,36 @@
 "use client";
 
 import React from "react";
-import BookAvailableStatus from "@/components/(book)/BookAvailableStatus";
+import useSWR from "swr";
 import BookGeneralInformation from "@/components/(book)/BookGeneralInformation";
 import { Separator } from "@/components/ui/separator";
-import AboutSection from "@/components/(book)/AboutSection";
-import OpinionSection from "@/components/(book)/OpinionSection";
-import useSWR from 'swr'
+import BookCarousel from "@/components/(home-page)/BookCarousel";
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
-
-const bookData = {
-  created_at: "2024-11-02T18:33:58.986Z",
-  title: "Atomic Habits",
-  img_url:
-    "https://image.slidesharecdn.com/nhagiakim-161103070024/95/nh-gi-kim-the-alchemist-1-638.jpg?cb=1478156544",
-  author: "James Clear",
-  published_year: "2018-10-16T00:00:00.000Z",
-  category: "Self-Development",
-  avg_rating: 4.8,
-  rating_count: 158432,
-  description:
-    "A revolutionary system to get 1% better every day. Learn how tiny changes can lead to remarkable results in this practical guide to habit formation and behavior change.",
-  id: "2",
-};
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 function BookDetail({ params }) {
   const { bookId } = React.use(params);
-  const { data, error, isLoading } = useSWR(`/api/books/${bookId}`, fetcher)
+  const { data, error, isLoading } = useSWR(`/api/books/${bookId}`, fetcher);
+  const { data: youMightLikeData } = useSWR(
+    `/api/suggest/book/${bookId}`,
+    fetcher
+  );
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error</div>
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error</div>;
 
-  const bookData = data[0]
-  console.log("Book Data: ", bookData)
+  const bookData = data[0];
+  console.log("Book Data: ", bookData);
+
   return (
-    <>
-      <div className="flex flex-col p-2 xl:p-20 xl:pr-40 gap-20">
-        <div className="flex flex-col xl:flex-row justify-between w-full space-x-4">
-          {/* Left Column - Book Cover and Information */}
-          <BookGeneralInformation bookData={bookData} />
-          {/* Right Column - Book Available Status */}
-          <div className="flex justify-center items-center xl:items-start xl:flex-shrink-0">
-            <BookAvailableStatus bookData={bookData} />
-          </div>
-        </div>
-        <Separator className="bg-foreground" />
-        <AboutSection />
-        <Separator className="bg-foreground" />
-        <OpinionSection />
+    <div className="flex flex-col p-2 xl:p-20 xl:pr-40">
+      <BookGeneralInformation bookData={bookData} />
+      <Separator className="bg-foreground mt-10" />
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold">You might also like</h2>
+        <BookCarousel book_data={youMightLikeData} />
       </div>
-    </>
+    </div>
   );
 }
 
