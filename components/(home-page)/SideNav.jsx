@@ -7,6 +7,7 @@ import {
   CircleHelp,
   Library,
   Settings,
+  UserRound,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -15,16 +16,14 @@ import { ChevronsLeft } from "lucide-react";
 import { useSideNav } from "@/contexts/SideNavContext";
 
 const links = [
-  { name: "Thể loại", href: "/category", icon: Library, category: "KHÁM PHÁ" },
+  { 
+    name: "Thể loại", 
+    href: "/category", 
+    icon: Library, 
+    category: "KHÁM PHÁ" },
   {
     name: "Tác giả",
     href: "/author",
-    icon: BookUser,
-    category: "KHÁM PHÁ",
-  },
-  {
-    name: "Nhà xuất bản",
-    href: "/publisher",
     icon: BookCheck,
     category: "KHÁM PHÁ",
   },
@@ -40,8 +39,24 @@ const links = [
     icon: Library,
     category: "BẠN",
   },
-  { name: "Cài đặt", href: "/setting", icon: Settings, category: "KHÁC" },
-  { name: "Trợ giúp", href: "/help", icon: CircleHelp, category: "KHÁC" },
+  { 
+    name: "Cài đặt", 
+    href: "/setting", 
+    icon: Settings, 
+    category: "KHÁC" 
+  },
+  { 
+    name: "Trợ giúp", 
+    href: "/help", 
+    icon: CircleHelp, 
+    category: "KHÁC" 
+  },
+  { 
+    name: "Về chúng tôi", 
+    href: "/about", 
+    icon: UserRound, 
+    category: "KHÁC" 
+  },
 ];
 
 export function ExpandedButton() {
@@ -84,18 +99,6 @@ function SideNav() {
         expanded ? "w-64 z-0" : "-z-50 md:z-0 w-20"
       }`}
     >
-      {/* <div className="flex flex-col z-50">
-        <button
-          onClick={() => setExpanded((curr) => !curr)}
-          className="p-1.5 z-50 border-2 m-2 rounded-lg hover:bg-accent"
-        >
-          <ChevronsLeft
-            size={28}
-            className="transition-transform duration-300 mx-auto"
-            style={{ transform: expanded ? "rotate(0deg)" : "rotate(180deg)" }}
-          />
-        </button>
-      </div> */}
       <div
         className={`${
           expanded ? "flex flex-col" : "hidden md:flex md:flex-col"
