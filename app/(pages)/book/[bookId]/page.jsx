@@ -35,10 +35,10 @@ function BookDetail({ params }) {
           <h2 className="mx-20 text-2xl font-bold">You might also like</h2>
           <BookCarousel book_data={youMightLikeData} />
         </div>
-        <Separator className="bg-foreground" />
+        {/* <Separator className="bg-foreground" />
         <AboutSection />
         <Separator className="bg-foreground" />
-        <OpinionSection />
+        <OpinionSection /> */}
       </div>
     </>
   );
