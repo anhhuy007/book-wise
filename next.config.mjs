@@ -5,6 +5,7 @@ const nextConfig = {
     domains: [
       'images.isbndb.com',
       'image.slidesharecdn.com',
+      'picsum.photos'
     ], // Add your external image domain here
   },
 };

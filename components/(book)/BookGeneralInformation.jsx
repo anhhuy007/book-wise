@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import LoadingAnimation from "../ui/loading";
 
 function BookGeneralInformation({ bookData }) {
   const [isLiked, setIsLiked] = useState(false);
@@ -21,7 +22,7 @@ function BookGeneralInformation({ bookData }) {
   };
 
   if (!bookData) {
-    return <div>Loading...</div>;
+    return <LoadingAnimation />;
   }
 
   const fullStars = Math.floor(bookData.avg_rating);
@@ -29,9 +30,9 @@ function BookGeneralInformation({ bookData }) {
 
   return (
     <>
-      <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
+      <div className="grid md:grid-cols-2 gap-8 items-start">
         {/* Book Cover */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-lg border bg-muted">
+        <div className="relative aspect-[3/4] max-h-[650px] items-center overflow-hidden rounded-lg border bg-muted">
           <Image
             src={bookData.img_url}
             alt={bookData.title}
@@ -49,11 +50,13 @@ function BookGeneralInformation({ bookData }) {
                 {bookData.title}
               </h1>
               <div className="text-sm text-muted-foreground space-x-2">
-                <span>ISBN: {bookData.isbn}</span>
+                <span>ISBN: {bookData.isbn13}</span>
                 <span>•</span>
-                <span>{bookData.pages} Pages</span>
+                <span>{bookData.page_count} Pages</span>
                 <span>•</span>
-                <span>Language: {bookData.language}</span>
+                <span>
+                  Language: {bookData.language == "en" ? "English" : "Other"}
+                </span>
               </div>
             </div>
             <Button
@@ -63,9 +66,9 @@ function BookGeneralInformation({ bookData }) {
               onClick={handleLike}
             >
               {isLiked ? (
-                <Heart className="h-5 w-5 " />
+                <Heart className="h-5 w-5 text-red-500 " />
               ) : (
-                <Heart className="h-5 w-5 text-red-500" />
+                <Heart className="h-5 w-5 " />
               )}
             </Button>
           </div>
@@ -82,7 +85,7 @@ function BookGeneralInformation({ bookData }) {
               </span>
               <span>•</span>
               <span className="text-sm text-muted-foreground">
-                Published: {bookData.published_year}
+                Published: {bookData.published_date}
               </span>
             </div>
           </div>

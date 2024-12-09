@@ -55,6 +55,7 @@ export async function searchBooksByAuthor(author) {
         SELECT * FROM books
         WHERE authors ILIKE ${`%${author}%`}
     `;
+
   return response;
 }
 
@@ -63,6 +64,29 @@ export async function searchBooksByCategory(category) {
         SELECT * FROM books
         WHERE category ILIKE ${`%${category}%`}
     `;
+
+  return response;
+}
+
+export async function getCategories() {
+  const response = await sql`
+        SELECT * FROM categories
+    `;
+
+  return response;
+}
+
+// app/services/Services.js
+export async function getBooksByCategory(categoryName) {
+  const response = await sql`
+    SELECT b.*, c.name as category_name, c.description as category_description 
+    FROM books b
+    JOIN categories c ON b.category = c.name
+    WHERE c.name = ${categoryName}
+    ORDER BY b.avg_rating DESC
+  `;
+
+  console.log("Books by Category: ", categoryName);
 
   return response;
 }
