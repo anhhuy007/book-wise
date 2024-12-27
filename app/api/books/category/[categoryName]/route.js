@@ -1,9 +1,10 @@
-// app/api/books/category/[categoryName]/route.js
 import { getBooksByCategory } from "@/app/services/Services";
 
 export async function GET(req, { params }) {
   try {
     const { categoryName } = params;
+    const { searchParams } = new URL(req.url);
+    const page = Number(searchParams.get('page')) || 1;
     const decodedCategoryName = decodeURIComponent(categoryName);
 
     if (!categoryName) {
@@ -16,7 +17,7 @@ export async function GET(req, { params }) {
       );
     }
 
-    const books = await getBooksByCategory(decodedCategoryName);
+    const { books, totalPages, currentPage } = await getBooksByCategory(decodedCategoryName, page);
 
     if (!books.length) {
       return new Response(
@@ -24,13 +25,11 @@ export async function GET(req, { params }) {
           books: [],
           categoryInfo: {
             name: decodedCategoryName,
-            description: "No books found in this category"
-          }
+            description: "No books found in this category",
+          },
+          pagination: { currentPage: 1, totalPages: 1 }
         }),
-        {
-          status: 404,
-          headers: { "Content-Type": "application/json" },
-        }
+        { status: 404, headers: { "Content-Type": "application/json" } }
       );
     }
 
@@ -40,19 +39,15 @@ export async function GET(req, { params }) {
         categoryInfo: {
           name: decodedCategoryName,
           description: `Books in ${decodedCategoryName} category`
-        }
+        },
+        pagination: { currentPage, totalPages }
       }),
-      {
-        headers: { "Content-Type": "application/json" },
-      }
+      { headers: { "Content-Type": "application/json" } }
     );
   } catch (error) {
     return new Response(
       JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      }
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { Star, StarHalf, Eye, Heart, UserPlus } from "lucide-react";
+import {
+  Star,
+  StarHalf,
+  Eye,
+  Heart,
+  UserPlus,
+  BookmarkPlus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -17,12 +24,11 @@ import LoadingAnimation from "../ui/loading";
 function BookGeneralInformation({ bookData }) {
   const [isLiked, setIsLiked] = useState(false);
 
-  const handleLike = () => {
-    setIsLiked((prev) => !prev);
+  const handleFavourite = async() => {
   };
 
   if (!bookData) {
-    return <LoadingAnimation />
+    return <LoadingAnimation />;
   }
 
   const fullStars = Math.floor(bookData.avg_rating);
@@ -30,9 +36,9 @@ function BookGeneralInformation({ bookData }) {
 
   return (
     <>
-      <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-start">
+      <div className="grid md:grid-cols-2 gap-8 items-start">
         {/* Book Cover */}
-        <div className="relative aspect-[3/4] overflow-hidden rounded-lg border bg-muted">
+        <div className="relative aspect-[3/4] max-h-[650px] items-center overflow-hidden rounded-lg border bg-muted">
           <Image
             src={bookData.img_url}
             alt={bookData.title}
@@ -46,7 +52,7 @@ function BookGeneralInformation({ bookData }) {
         <div className="space-y-6">
           <div className="flex justify-between items-start">
             <div className="space-y-1">
-              <h1 className="text-4xl font-bold tracking-tight">
+              <h1 className="text-4xl font-bold tracking-tight max-w-[500px]">
                 {bookData.title}
               </h1>
               <div className="text-sm text-muted-foreground space-x-2">
@@ -54,19 +60,20 @@ function BookGeneralInformation({ bookData }) {
                 <span>•</span>
                 <span>{bookData.page_count} Pages</span>
                 <span>•</span>
-                <span>Language: {bookData.language == 'en' ? "English" : "Other"}</span>
+                <span>
+                  Language: {bookData.language == "en" ? "English" : "Other"}
+                </span>
               </div>
             </div>
             <Button
               variant="ghost"
-              size="icon"
               className="rounded-full"
-              onClick={handleLike}
+              onClick={handleFavourite}
             >
               {isLiked ? (
-                <Heart className="h-5 w-5 " />
+                <Heart className="text-red-500 w-12 h-12" />
               ) : (
-                <Heart className="h-5 w-5 text-red-500" />
+                <Heart className="w-12 h-12" />
               )}
             </Button>
           </div>
@@ -89,12 +96,12 @@ function BookGeneralInformation({ bookData }) {
           </div>
 
           <Card className="p-4 bg-muted/50 flex flex-col">
-            <p className="text-sm leading-relaxed line-clamp-6">
+            <p className="text-sm leading-relaxed line-clamp-[8]">
               {bookData.description}
             </p>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="link" className="">
+                <Button variant="link" className="text-foreground/50 underline">
                   Read more
                 </Button>
               </DialogTrigger>
@@ -141,25 +148,13 @@ function BookGeneralInformation({ bookData }) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-4">
-              <div className="w-32">
-                <input
-                  type="number"
-                  min="1"
-                  defaultValue={1}
-                  className="w-full px-3 py-2 border rounded-md"
-                />
-              </div>
-              <Button className="flex-1" size="lg">
-                Add To Cart
-              </Button>
-            </div>
+            <div className="flex items-center space-x-4"></div>
             <div className="flex flex-1 items-center w-full space-x-4">
               <Button size="lg" className="flex-1">
-                Preview
+                Preview <Eye className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" className="flex-1">
-                Add to favorite
+              <Button size="lg" variant="outline" className="flex-1" onClick={handleFavourite}>
+                Add to favorite <BookmarkPlus className="w-4 h-4" />
               </Button>
             </div>
           </div>
