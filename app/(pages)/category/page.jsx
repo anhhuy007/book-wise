@@ -1,5 +1,5 @@
 import { getCategories } from "@/app/services/Services";
-import { CategoriesGrid } from "@/components/category/CategoryItem";
+import { CategoriesGrid } from "@/components/category/CategoryList";
 
 export default async function CategoriesPage() {
   const categories = await getCategories();  
