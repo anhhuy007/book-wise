@@ -3,6 +3,12 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 const BookCard = ({ book = {} }) => {
+  const [randomOffset, setRandomOffset] = useState(0);
+
+  useEffect(() => {
+    setRandomOffset(Math.random());
+  }, []);
+
   if (!book) return null;
 
   return (
@@ -25,25 +31,22 @@ const BookCard = ({ book = {} }) => {
             <div className="flex flex-row gap-2 items-center w-full">
               <StarFilledIcon size={16} color="#FFD700" />
               <span className="text-xs font-semibold text-gray-600">
-                {(((book.avg_rating || 0) % 5) + Math.random()).toFixed(1)}
+                {(((book.avg_rating || 0) % 5) + randomOffset).toFixed(1)}
               </span>
               <span className="text-xs font-bold text-yellow-300"> · </span>
               <span className="text-xs font-semibold text-gray-500 overflow-hidden">
                 {((book.rating_count || 0) % 1000).toLocaleString()} reviews
               </span>
             </div>
-
             <span className="font-bold text-sm text-purple-600 pt-3 block truncate">
               {book.category || "Uncategorized"}
             </span>
-            <Link href={`/book/${book.id}`} className="hover:underline">
-              <h3 className="text-lg font-bold text-black pt-2 line-clamp-2 overflow-hidden text-clip">
-                {book.title || "Untitled"}
-              </h3>
-              <span className="text-sm text-gray-500 block truncate">
-                {book.authors || "Unknown Author"}
-              </span>
-            </Link>
+            <h3 className="text-lg font-bold text-black pt-2 line-clamp-2 overflow-hidden text-clip">
+              {book.title || "Untitled"}
+            </h3>
+            <span className="text-sm text-gray-500 block truncate">
+              {book.authors || "Unknown Author"}
+            </span>
           </div>
         </div>
       </div>

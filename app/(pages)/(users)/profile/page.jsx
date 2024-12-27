@@ -1,28 +1,34 @@
-'use client';
+"use client";
 
-import './style.css';
-import React from 'react';
-import useSWR from 'swr';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from 'next/link';
-import { faUser, faEnvelope, faSchool, faChalkboardTeacher, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import "./style.css";
+import React from "react";
+import useSWR from "swr";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 import {
-    Carousel,
-    CarouselContent,
-    CarouselItem
+  faUser,
+  faEnvelope,
+  faSchool,
+  faChalkboardTeacher,
+  faCalendarAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
 } from "@/components/ui/carousel";
-import BookCard from '@/components/(home-page)/BookCard';
+import BookCard from "@/components/(home-page)/BookCard";
 
 const ProfileField = ({ label, value, icon }) => (
-    <tr>
-        <td>
-            <FontAwesomeIcon icon={icon} className="icon" />
-            {label}
-        </td>
-        <td>
-            <input type="text" value={value} disabled />
-        </td>
-    </tr>
+  <tr>
+    <td>
+      <FontAwesomeIcon icon={icon} className="icon" />
+      {label}
+    </td>
+    <td>
+      <input type="text" value={value} disabled />
+    </td>
+  </tr>
 );
 
 // Create fetcher function for SWR
@@ -48,67 +54,69 @@ function shuffle(array) {
 }
 
 export default function Profile() {
-    const profileData = [
-        { label: "Username", value: "book-wise", icon: faUser },
-        { label: "Email", value: "bookwise@gmail.com", icon: faEnvelope },
-        { label: "Trường", value: "ĐH KHTN", icon: faSchool },
-        { label: "Khoa", value: "CNTT", icon: faChalkboardTeacher },
-        { label: "Ngày sinh", value: "25/10/2004", icon: faCalendarAlt },
-    ];
+  const profileData = [
+    { label: "Username", value: "book-wise", icon: faUser },
+    { label: "Email", value: "bookwise@gmail.com", icon: faEnvelope },
+    { label: "Trường", value: "ĐH KHTN", icon: faSchool },
+    { label: "Khoa", value: "CNTT", icon: faChalkboardTeacher },
+    { label: "Ngày sinh", value: "25/10/2004", icon: faCalendarAlt },
+  ];
 
-    const { data, error, isLoading } = useSWR(
-        "https://672752d1302d03037e70a402.mockapi.io/book",
-        fetcher
-    );
+  const { data, error, isLoading } = useSWR(
+    "https://672752d1302d03037e70a402.mockapi.io/book",
+    fetcher
+  );
 
-    if (error) {
+  if (error) {
     return (
-        <div className="text-center p-4 text-red-500">
+      <div className="text-center p-4 text-red-500">
         Failed to load books. Please try again later.
-        </div>
+      </div>
     );
-    }
+  }
 
-    if (isLoading) {
+  if (isLoading) {
     return (
-        <div className="text-center p-4">
+      <div className="text-center p-4">
         <div className="animate-pulse">Loading books...</div>
-        </div>
+      </div>
     );
-    }
+  }
 
-    const books = shuffle(data);
+  const books = data;
 
-    return (
-        <div className='profile'>
-            <h1>User Profile</h1>
-            <div className="container">
-                <table>
-                    <tbody>
-                        {profileData.map((field, index) => (
-                            <ProfileField key={index} {...field} />
-                        ))}
-                    </tbody>
-                </table>
-                <div className="d-flex w-full mt-5">
-                    <div className='flex justify-between'>
-                        <h1>Favourite books</h1>
-                        <Link href='/favourite-books' className="mt-3 hover:text-blue-800">More...</Link>
-                    </div>
-                    <Carousel className="w-full max-w-screen-xl pl-7">
-                        <CarouselContent>
-                            {Array.from({ length: 5 }).map((_, index) => (
-                                <CarouselItem key={index} className="md:basis-1/3 lg:basis-1/5">
-                                    <BookCard {...books[index]} />
-                                </CarouselItem>
-                            ))}
-                        </CarouselContent>
-                    </Carousel>
-                </div>
-            </div>
+  return (
+    <div className="profile">
+      <h1>User Profile</h1>
+      <div className="container">
+        <table>
+          <tbody>
+            {profileData.map((field, index) => (
+              <ProfileField key={index} {...field} />
+            ))}
+          </tbody>
+        </table>
+        <div className="d-flex w-full mt-5">
+          <div className="flex justify-between">
+            <h1>Favourite books</h1>
+            <Link href="/favourite-books" className="mt-3 hover:text-blue-800">
+              More...
+            </Link>
+          </div>
+          <Carousel className="w-full max-w-screen-xl pl-7">
+            <CarouselContent>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <CarouselItem key={index} className="md:basis-1/3 lg:basis-1/5">
+                  <BookCard {...books[index]} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
-    );
-};
+      </div>
+    </div>
+  );
+}
 
 // export default function Profile() {
 //     return (
@@ -141,7 +149,8 @@ export default function Profile() {
 //         </div>
 //     )
 // }
-{/* <div className="cover">
+{
+  /* <div className="cover">
         <div className="container">
             <h1>a</h1>
         </div>
@@ -200,4 +209,5 @@ export default function Profile() {
                 <button className="add-more-btn">+ Add more</button>
             </div>
         </div>
-        </div> */}
+        </div> */
+}
