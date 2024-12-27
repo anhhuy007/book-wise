@@ -98,3 +98,15 @@ export async function getAuthors() {
 
   return response;
 }
+
+export async function getUserFavouriteBooks(userId) {
+  // join with books table to get book details
+  const response = await sql`
+    SELECT b.*
+    FROM favourite_books fb
+    JOIN books b ON fb.book_id = b.id
+    WHERE fb.user_id = ${userId}
+  `;
+
+  return response;
+}

@@ -5,6 +5,8 @@ import Link from "next/link";
 const BookCard = ({ book = {} }) => {
   if (!book) return null;
 
+  console.log("Favourite book: ", book);
+
   return (
     <Link href={`/book/${book.id || ""}`}>
       <div className="flex flex-col items-start w-full max-w-[210px] group">
