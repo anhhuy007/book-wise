@@ -32,8 +32,8 @@ import { Separator } from "@/components/ui/separator";
 export default function TopNav() {
   const userItems = [
     {
-      name: "Cài đặt tài khoản",
-      link: "/account",
+      name: "Hồ sơ người dùng",
+      link: "/profile",
       icon: <User />,
     },
     {
@@ -54,6 +54,7 @@ export default function TopNav() {
   ];
 
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="w-full bg-background text-foreground sticky top-0">
@@ -79,7 +80,7 @@ export default function TopNav() {
             </div>
             <Notification />
             <Separator orientation="vertical" className="h-10" />
-            <DropdownMenu>
+            <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
               <DropdownMenuTrigger>
                 <Avatar>
                   <AvatarImage src="https://github.com/shadcn.png" />
@@ -97,6 +98,7 @@ export default function TopNav() {
                           ? "bg-primary text-primary-foreground"
                           : ""
                       } py-2 flex items-center`}
+                      onClick={() => {setIsOpen(false);}}
                     >
                       <Link
                         href={item.link}

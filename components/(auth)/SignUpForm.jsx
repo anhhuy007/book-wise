@@ -5,15 +5,26 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import logo from '@/assets/icons/logo.png'
+import { signUp } from '@/app/services/Services'
 
 export default function SignUpForm() {
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Add registration logic here
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+    try {
+      await signUp(email, password, username);
+      window.location.href = '/profile-setup';
+    } catch (error) {
+      console.error('Signup failed: ', error);
+    }
   }
 
   return (    
@@ -52,15 +63,26 @@ export default function SignUpForm() {
         </div>
 
         <div className="w-full lg:w-1/2 flex items-center justify-center bg-background">
-          <div className="bg-card p-8 w-full h-[500px] border border-border">
+          <div className="bg-card p-5 w-full h-[500px] border border-border">
             <div className="text-center">
               <h1 className="text-3xl font-bold text-foreground">Đăng ký</h1>
               <p className="text-muted-foreground"></p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-3">
+            <div>
+                <label className="block text-foreground text-l">Username</label>
+                <input
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full px-4 py-3 rounded-[var(--radius)] bg-background border border-input text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition"
+                  placeholder="Tên đăng nhập"
+                  required
+                />
+              </div>
               <div>
-                <label className="block text-foreground mb-2 text-l">Email</label>
+                <label className="block text-foreground text-l">Email</label>
                 <input
                   type="email"
                   value={email}
@@ -72,7 +94,7 @@ export default function SignUpForm() {
               </div>
 
               <div>
-                <label className="block text-foreground mb-2 text-l">Mật khẩu</label>
+                <label className="block text-foreground text-l">Mật khẩu</label>
                 <input
                   type="password"
                   value={password}
@@ -84,7 +106,7 @@ export default function SignUpForm() {
               </div>
 
               <div>
-                <label className="block text-foreground mb-2 text-l">Xác nhận mật khẩu</label>
+                <label className="block text-foreground text-l">Xác nhận mật khẩu</label>
                 <input
                   type="password"
                   value={confirmPassword}
