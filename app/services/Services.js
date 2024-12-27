@@ -90,3 +90,11 @@ export async function getBooksByCategory(categoryName) {
 
   return response;
 }
+
+export async function getAuthors() {
+  const response = await sql`
+        SELECT * FROM authors
+    `;
+
+  return response;
+}
