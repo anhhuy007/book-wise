@@ -132,3 +132,13 @@ export async function getUserFavouriteBooks(userId) {
 
   return response;
 }
+
+export async function addFavouriteBook(userId, bookId) {
+  const response = await sql`
+    INSERT INTO favourite_books (user_id, book_id)
+    VALUES (${userId}, ${bookId})
+    RETURNING *
+  `;
+
+  return response;
+}

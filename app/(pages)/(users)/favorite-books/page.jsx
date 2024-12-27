@@ -9,30 +9,12 @@ import LoadingAnimation from "@/components/ui/loading";
 // Create fetcher function for SWR
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-// function shuffle(array) {
-//   let currentIndex = array.length;
-
-//   // While there remain elements to shuffle...
-//   while (currentIndex != 0) {
-//     // Pick a remaining element...
-//     let randomIndex = Math.floor(Math.() * currentIndex);
-//     currentIndex--;
-
-//     // And swap it with the current element.
-//     [array[currentIndex], array[randomIndex]] = [
-//       array[randomIndex],
-//       array[currentIndex],
-//     ];
-//   }
-
-  return array;
-}
-
 export default function FavouriteBooks() {
-  const { data: books, error, isLoading } = useSWR(
-    "/api/favourites/1",
-    fetcher
-  );
+  const {
+    data: books,
+    error,
+    isLoading,
+  } = useSWR("/api/favourites/1", fetcher);
 
   if (error) {
     return (
@@ -53,9 +35,12 @@ export default function FavouriteBooks() {
   return (
     <div className="favourite-books">
       <div className="flex flex-col overflow-y-auto">
-        <h1>Favourite Books</h1>
-        <div className="grid grid-cols-5 gap-4">
-        {books.map((book) => (
+        <h1 className="text-4xl font-bold text-center">
+          Danh sách yêu thích của bạn 
+        </h1>
+
+        <div className="grid grid-cols-5 gap-4 mt-10">
+          {books.map((book) => (
             <BookCard key={book.id} book={book} />
           ))}
         </div>

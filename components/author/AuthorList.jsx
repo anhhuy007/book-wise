@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export function AuthorGrid({ authors }) {
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="flex flex-col mx-auto px-4 py-8">
       <h2 className="text-3xl font-bold mb-6">Popular Authors</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {authors.map((author) => (

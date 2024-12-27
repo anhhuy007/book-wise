@@ -24,8 +24,7 @@ import LoadingAnimation from "../ui/loading";
 function BookGeneralInformation({ bookData }) {
   const [isLiked, setIsLiked] = useState(false);
 
-  const handleLike = () => {
-    setIsLiked((prev) => !prev);
+  const handleFavourite = async() => {
   };
 
   if (!bookData) {
@@ -69,7 +68,7 @@ function BookGeneralInformation({ bookData }) {
             <Button
               variant="ghost"
               className="rounded-full"
-              onClick={handleLike}
+              onClick={handleFavourite}
             >
               {isLiked ? (
                 <Heart className="text-red-500 w-12 h-12" />
@@ -154,7 +153,7 @@ function BookGeneralInformation({ bookData }) {
               <Button size="lg" className="flex-1">
                 Preview <Eye className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" className="flex-1">
+              <Button size="lg" variant="outline" className="flex-1" onClick={handleFavourite}>
                 Add to favorite <BookmarkPlus className="w-4 h-4" />
               </Button>
             </div>
