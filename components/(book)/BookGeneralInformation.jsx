@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { Star, StarHalf, Eye, Heart, UserPlus } from "lucide-react";
+import {
+  Star,
+  StarHalf,
+  Eye,
+  Heart,
+  UserPlus,
+  BookmarkPlus,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
@@ -46,7 +53,7 @@ function BookGeneralInformation({ bookData }) {
         <div className="space-y-6">
           <div className="flex justify-between items-start">
             <div className="space-y-1">
-              <h1 className="text-4xl font-bold tracking-tight">
+              <h1 className="text-4xl font-bold tracking-tight max-w-[500px]">
                 {bookData.title}
               </h1>
               <div className="text-sm text-muted-foreground space-x-2">
@@ -61,14 +68,13 @@ function BookGeneralInformation({ bookData }) {
             </div>
             <Button
               variant="ghost"
-              size="icon"
               className="rounded-full"
               onClick={handleLike}
             >
               {isLiked ? (
-                <Heart className="h-5 w-5 text-red-500 " />
+                <Heart className="text-red-500 w-12 h-12" />
               ) : (
-                <Heart className="h-5 w-5 " />
+                <Heart className="w-12 h-12" />
               )}
             </Button>
           </div>
@@ -96,7 +102,7 @@ function BookGeneralInformation({ bookData }) {
             </p>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="link" className="">
+                <Button variant="link" className="text-foreground/50 underline">
                   Read more
                 </Button>
               </DialogTrigger>
@@ -146,10 +152,10 @@ function BookGeneralInformation({ bookData }) {
             <div className="flex items-center space-x-4"></div>
             <div className="flex flex-1 items-center w-full space-x-4">
               <Button size="lg" className="flex-1">
-                Preview
+                Preview <Eye className="w-4 h-4" />
               </Button>
               <Button size="lg" variant="outline" className="flex-1">
-                Add to favorite
+                Add to favorite <BookmarkPlus className="w-4 h-4" />
               </Button>
             </div>
           </div>

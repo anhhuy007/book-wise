@@ -91,6 +91,28 @@ export async function getBooksByCategory(categoryName) {
   return response;
 }
 
+export async function getBooksByAuthor(authorId) {
+  const response = await sql`
+    SELECT b.*
+    FROM books b
+    JOIN authors a ON b.authors = a.name
+    WHERE a.id = ${authorId}
+    ORDER BY b.avg_rating DESC
+  `;
+
+  console.log("Books by Author: ", authorId);
+
+  return response;
+}
+
+export async function getAuthorById(authorId) {
+  const response = await sql`
+    SELECT * FROM authors
+    WHERE id = ${authorId}
+  `;
+  return response[0];
+}
+
 export async function getAuthors() {
   const response = await sql`
         SELECT * FROM authors

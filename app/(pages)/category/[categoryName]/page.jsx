@@ -8,12 +8,12 @@ import LoadingAnimation from "@/components/ui/loading";
 import { useParams } from "next/navigation";
 import BookCard from "@/components/(home-page)/BookCard";
 
-const fetcher = (...args) => fetch(...args).then(res => res.json());
+const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
 export default function BooksByCategory() {
   const params = useParams();
   const { categoryName } = params;
-  
+
   const { data, error, isLoading } = useSWR(
     `/api/books/category/${encodeURIComponent(categoryName)}`,
     fetcher
@@ -35,14 +35,16 @@ export default function BooksByCategory() {
     );
   }
 
-  let { books, categoryInfo } = data || {};
+  const { books, categoryInfo } = data || {};
 
   console.log(books);
 
   return (
     <div className="flex flex-col gap-8 p-6 md:p-12">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold mb-4">{categoryInfo?.name || categoryName}</h1>
+        <h1 className="text-4xl font-bold mb-4">
+          {categoryInfo?.name || categoryName}
+        </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           {categoryInfo?.description}
         </p>
