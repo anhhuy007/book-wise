@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { SideNavProvider } from "@/contexts/SideNavContext";
 import { useSideNav } from "@/contexts/SideNavContext";
 import Footer from "@/components/(home-page)/Footer";
+import { Toaster } from "react-hot-toast";
 import { ChevronsLeft } from "lucide-react";
 import { expandedButton } from "@/components/(home-page)/SideNav";
 
@@ -27,6 +28,7 @@ function LayoutContent({ children }) {
 
   return (
     <div className="flex flex-col">
+      <Toaster position="top-center" reverseOrder={false} />
       <div className=" flex-none sticky top-0 z-40 ">
         <TopNav />
         <Separator />

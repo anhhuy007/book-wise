@@ -20,13 +20,20 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import LoadingAnimation from "../ui/loading";
+import toast from "react-hot-toast";
+
+const handleLike = () => {
+  toast.success("Đã thêm vào danh sách yêu thích");
+  setIsLiked((prev) => !prev);
+};
+
+const handleAddToFavorite = () => {
+  console.log("Add to favorite");
+  toast.success("Đã thêm vào danh sách yêu thích");
+};
 
 function BookGeneralInformation({ bookData }) {
   const [isLiked, setIsLiked] = useState(false);
-
-  const handleLike = () => {
-    setIsLiked((prev) => !prev);
-  };
 
   if (!bookData) {
     return <LoadingAnimation />;
@@ -59,10 +66,10 @@ function BookGeneralInformation({ bookData }) {
               <div className="text-sm text-muted-foreground space-x-2">
                 <span>ISBN: {bookData.isbn13}</span>
                 <span>•</span>
-                <span>{bookData.page_count} Pages</span>
+                <span>{bookData.page_count} trang</span>
                 <span>•</span>
                 <span>
-                  Language: {bookData.language == "en" ? "English" : "Other"}
+                  Ngôn ngữ: {bookData.language == "en" ? "English" : "Other"}
                 </span>
               </div>
             </div>
@@ -82,16 +89,16 @@ function BookGeneralInformation({ bookData }) {
           <div className="space-y-2">
             <Link href={`/author/${bookData.authors}`}>
               <h2 className="text-xl font-semibold hover:underline">
-                by {bookData.authors}
+                viết bởi {bookData.authors}
               </h2>
             </Link>
             <div className="flex items-center space-x-2">
               <span className="text-sm text-muted-foreground">
-                Category: {bookData.category}
+                Thể loại: {bookData.category}
               </span>
               <span>•</span>
               <span className="text-sm text-muted-foreground">
-                Published: {bookData.published_date}
+                Sản xuất: {bookData.published_date}
               </span>
             </div>
           </div>
@@ -103,12 +110,12 @@ function BookGeneralInformation({ bookData }) {
             <Dialog>
               <DialogTrigger asChild>
                 <Button variant="link" className="text-foreground/50 underline">
-                  Read more
+                  Đọc thêm
                 </Button>
               </DialogTrigger>
               <DialogContent className="text-pretty">
                 <DialogHeader>
-                  <DialogTitle>Full Description</DialogTitle>
+                  <DialogTitle>Mô tả</DialogTitle>
                 </DialogHeader>
                 {bookData.description}
               </DialogContent>
@@ -145,7 +152,7 @@ function BookGeneralInformation({ bookData }) {
                 </div>{" "}
               </div>
               <div className="text-sm text-muted-foreground">
-                ({bookData.rating_count} reviews)
+                ({bookData.rating_count} đánh giá)
               </div>
             </div>
 
@@ -154,8 +161,14 @@ function BookGeneralInformation({ bookData }) {
               <Button size="lg" className="flex-1">
                 Preview <Eye className="w-4 h-4" />
               </Button>
-              <Button size="lg" variant="outline" className="flex-1">
-                Add to favorite <BookmarkPlus className="w-4 h-4" />
+              <Button
+                size="lg"
+                variant="outline"
+                className="flex-1"
+                onClick={handleAddToFavorite}
+              >
+                Thêm vào yêu thích
+                <BookmarkPlus className="w-4 h-4" />
               </Button>
             </div>
           </div>
@@ -199,7 +212,7 @@ export function BookSearchResult({ bookData }) {
           </Link>
           <Link href={`/author/${bookData.authors}`}>
             <h2 className="text-lg md:text-xl font-semibold text-blue-500 hover:underline">
-              By: {bookData.authors}
+              Viết bởi: {bookData.authors}
             </h2>
           </Link>
           <Link href={`/category/${bookData.category}`}>
