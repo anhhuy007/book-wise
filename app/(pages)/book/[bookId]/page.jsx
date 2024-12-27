@@ -32,7 +32,7 @@ function BookDetail({ params }) {
         <BookGeneralInformation bookData={bookData} />
         <Separator className="bg-foreground mt-10" />
         <div className="-mx-48">
-          <h2 className="mx-20 text-2xl font-bold">You might also like</h2>
+          <h2 className="mx-20 text-2xl font-bold">Bạn cũng có thể thích</h2>
           <BookCarousel book_data={youMightLikeData} />
         </div>
         {/* <Separator className="bg-foreground" />

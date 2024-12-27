@@ -19,18 +19,19 @@ const authorsData = [
   },
   {
     name: "Author Three",
-    books: [
-      { title: "Book C1", img_url: "url_to_image_C1", avg_rating: 4.7 },
-    ],
+    books: [{ title: "Book C1", img_url: "url_to_image_C1", avg_rating: 4.7 }],
   },
 ];
 
 function FollowingAuthors() {
   return (
     <div>
-      <h1 className="font-bold text-2xl mb-3">Following Authors</h1>
+      <h1 className="font-bold text-2xl mb-3">Tác giả bạn đang theo dõi</h1>
       {authorsData.map((author, index) => (
-        <div key={index} className="author-container mb-5 border border-gray-200 rounded p-5">
+        <div
+          key={index}
+          className="author-container mb-5 border border-gray-200 rounded p-5"
+        >
           <h2 className="text-lg font-bold">{author.name}</h2>
           <h3 className="mt-5 mb-2">Tác phẩm tiêu biểu</h3>
           <div className="flex gap-2 overflow-x-auto">

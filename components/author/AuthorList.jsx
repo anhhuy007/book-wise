@@ -5,7 +5,7 @@ import Link from "next/link";
 export function AuthorGrid({ authors }) {
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6">Popular Authors</h2>
+      <h2 className="text-3xl font-bold mb-6">Những tác giả phổ biến</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {authors.map((author) => (
           <Link href={`/author/${author.id}`} key={author.id}>
@@ -23,7 +23,7 @@ export function AuthorGrid({ authors }) {
                     <h3 className="text-xl font-semibold">{author.name}</h3>
                     <p className="text-sm text-gray-600 flex items-center">
                       <Eye className="w-4 h-4 mr-1" />
-                      {(author.view_count || 0).toLocaleString()} views
+                      {(author.view_count || 0).toLocaleString()} lượt xem
                     </p>
                   </div>
                 </div>

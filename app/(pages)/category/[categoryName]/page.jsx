@@ -22,7 +22,7 @@ export default function BooksByCategory() {
   if (error) {
     return (
       <div className="text-center p-4 text-red-500">
-        Failed to load books. Please try again later.
+        Không thể tải sách. Vui lòng thử lại sau.
       </div>
     );
   }

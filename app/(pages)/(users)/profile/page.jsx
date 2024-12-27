@@ -34,25 +34,6 @@ const ProfileField = ({ label, value, icon }) => (
 // Create fetcher function for SWR
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-function shuffle(array) {
-  let currentIndex = array.length;
-
-  // While there remain elements to shuffle...
-  while (currentIndex != 0) {
-    // Pick a remaining element...
-    let randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-
-  return array;
-}
-
 export default function Profile() {
   const profileData = [
     { label: "Username", value: "book-wise", icon: faUser },
@@ -70,7 +51,7 @@ export default function Profile() {
   if (error) {
     return (
       <div className="text-center p-4 text-red-500">
-        Failed to load books. Please try again later.
+        Không thể tải sách yêu thích. Vui lòng thử lại sau.
       </div>
     );
   }
@@ -78,7 +59,7 @@ export default function Profile() {
   if (isLoading) {
     return (
       <div className="text-center p-4">
-        <div className="animate-pulse">Loading books...</div>
+        <div className="animate-pulse">Đang tải...</div>
       </div>
     );
   }
@@ -87,7 +68,7 @@ export default function Profile() {
 
   return (
     <div className="profile">
-      <h1>User Profile</h1>
+      <h1>Trang cá nhân</h1>
       <div className="container">
         <table>
           <tbody>
@@ -98,7 +79,7 @@ export default function Profile() {
         </table>
         <div className="d-flex w-full mt-5">
           <div className="flex justify-between">
-            <h1>Favourite books</h1>
+            <h1>Sách yêu thích</h1>
             <Link href="/favourite-books" className="mt-3 hover:text-blue-800">
               More...
             </Link>

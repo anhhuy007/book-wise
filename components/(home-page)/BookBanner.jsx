@@ -81,7 +81,7 @@ export default function BookBanner({
                     ({avg_rating.toFixed(1)})
                   </span>
                 </div>
-                <span className="text-white">{rating_count} ratings</span>
+                <span className="text-white">{rating_count} đánh giá</span>
               </div>
               <div className="flex flex-wrap gap-4 mb-4">
                 <div>
@@ -91,12 +91,12 @@ export default function BookBanner({
                   <span className="ml-2 text-white">{published}</span>
                 </div>
                 <div>
-                  <span className="font-semibold text-yellow-200">Pages:</span>
+                  <span className="font-semibold text-yellow-200">Trang:</span>
                   <span className="ml-2 text-white">{page_count}</span>
                 </div>
                 <div>
                   <span className="font-semibold text-yellow-200">
-                    Language:
+                    Ngôn ngữ:
                   </span>
                   <span className="ml-2 text-white">{language}</span>
                 </div>
@@ -106,7 +106,7 @@ export default function BookBanner({
               <Link href={`/book/${id}`}>
                 <Button className="bg-white text-purple-700 hover:bg-yellow-100 transition-colors">
                   <BookOpen className="mr-2 h-4 w-4" />
-                  Read Now
+                  Đọc ngay
                 </Button>
               </Link>
               <Button
@@ -114,14 +114,14 @@ export default function BookBanner({
                 className="bg-white text-purple-700 hover:bg-yellow-100 transition-colors"
               >
                 <Heart className="mr-2 h-4 w-4" />
-                Add to Wishlist
+                Thêm vào yêu thích
               </Button>
               <Button
                 variant="outline"
                 className="bg-white text-purple-700 hover:bg-yellow-100 transition-colors"
               >
                 <Download className="mr-2 h-4 w-4" />
-                Download Sample
+                Tải xuống
               </Button>
             </div>
           </div>

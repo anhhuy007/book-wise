@@ -9,30 +9,11 @@ import LoadingAnimation from "@/components/ui/loading";
 // Create fetcher function for SWR
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-// function shuffle(array) {
-//   let currentIndex = array.length;
-
-//   // While there remain elements to shuffle...
-//   while (currentIndex != 0) {
-//     // Pick a remaining element...
-//     let randomIndex = Math.floor(Math.() * currentIndex);
-//     currentIndex--;
-
-//     // And swap it with the current element.
-//     [array[currentIndex], array[randomIndex]] = [
-//       array[randomIndex],
-//       array[currentIndex],
-//     ];
-//   }
-
-//   return array;
-// }
-
 const SlidingContainer = ({ isOpen, book, onClose }) => {
   return (
     <div className={`sliding-container ${isOpen ? "open" : ""}`}>
       <button className="close-button" onClick={onClose}>
-        Close
+        <span className="sr-only">Đóng</span>
       </button>
       {book && (
         <>
@@ -53,7 +34,7 @@ export default function FavouriteBooks() {
   if (error) {
     return (
       <div className="text-center p-4 text-red-500">
-        Failed to load books. Please try again later.
+        Không thể tải sách yêu thích. Vui lòng thử lại sau.
       </div>
     );
   }
@@ -71,7 +52,7 @@ export default function FavouriteBooks() {
   return (
     <div className="favourite-books">
       <div className="container overflow-y-auto">
-        <h1>Favourite Books</h1>
+        <h1>Sách yêu thích</h1>
         <div className="grid grid-cols-5 gap-4">
           {books.map((book, index) => (
             <div key={index}>

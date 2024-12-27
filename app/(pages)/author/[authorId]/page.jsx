@@ -28,7 +28,7 @@ export default function BooksByAuthor() {
   if (error || !data || !data.books) {
     return (
       <div className="text-center p-4 text-red-500">
-        Failed to load books for this author. Please try again later.
+        Không thể tải sách. Vui lòng thử lại sau.
       </div>
     );
   }
@@ -39,7 +39,7 @@ export default function BooksByAuthor() {
 
   if (!books.length) {
     return (
-      <div className="text-center p-4">No books found for this author.</div>
+      <div className="text-center p-4"> Không có sách nào của tác giả này.</div>
     );
   }
 
@@ -62,7 +62,7 @@ export default function BooksByAuthor() {
         </p>
       </div>
       {books.length < 4 ? (
-        <div className="flex items-center justify-between mx-60  p-4">
+        <div className="flex items-center justify-between mx-60 p-4">
           {books.map((book) => (
             <BookCard key={book.id} book={book} />
           ))}

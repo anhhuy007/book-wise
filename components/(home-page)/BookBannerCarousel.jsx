@@ -17,7 +17,7 @@ export default function BookBannerCarousel() {
   if (error) {
     return (
       <div className="text-center p-4 text-red-500">
-        Failed to load books. Please try again later.
+        Không thể tải sách. Vui lòng thử lại sau.
       </div>
     );
   }
@@ -25,7 +25,7 @@ export default function BookBannerCarousel() {
   if (isLoading) {
     return (
       <div className="text-center p-4">
-        <div className="animate-pulse">Loading books...</div>
+        <div className="animate-pulse">Đang tải sách...</div>
       </div>
     );
   }

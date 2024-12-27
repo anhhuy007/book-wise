@@ -35,17 +35,17 @@ const BookCard = ({ book = {} }) => {
               </span>
               <span className="text-xs font-bold text-yellow-300"> · </span>
               <span className="text-xs font-semibold text-gray-500 overflow-hidden">
-                {((book.rating_count || 0) % 1000).toLocaleString()} reviews
+                {((book.rating_count || 0) % 1000).toLocaleString()} đánh giá
               </span>
             </div>
             <span className="font-bold text-sm text-purple-600 pt-3 block truncate">
-              {book.category || "Uncategorized"}
+              {book.category || "Không có thể loại"}
             </span>
             <h3 className="text-lg font-bold text-black pt-2 line-clamp-2 overflow-hidden text-clip">
-              {book.title || "Untitled"}
+              {book.title || "Không có tên sách"}
             </h3>
             <span className="text-sm text-gray-500 block truncate">
-              {book.authors || "Unknown Author"}
+              {book.authors || "Không có tác giả"}
             </span>
           </div>
         </div>
