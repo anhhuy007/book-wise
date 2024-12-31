@@ -20,9 +20,9 @@ function Notification() {
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Notifications</SheetTitle>
+            <SheetTitle>Thông báo</SheetTitle>
           </SheetHeader>
-          <SheetDescription>No new notifications</SheetDescription>
+          <SheetDescription>Không có thông báo mới</SheetDescription>
         </SheetContent>
       </Sheet>
     </>

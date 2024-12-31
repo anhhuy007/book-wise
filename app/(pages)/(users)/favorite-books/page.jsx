@@ -1,6 +1,5 @@
 "use client";
 
-import "./style.css";
 import React from "react";
 import useSWR from "swr";
 import BookCard from "@/components/(home-page)/BookCard";
@@ -9,27 +8,12 @@ import LoadingAnimation from "@/components/ui/loading";
 // Create fetcher function for SWR
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-const SlidingContainer = ({ isOpen, book, onClose }) => {
-  return (
-    <div className={`sliding-container ${isOpen ? "open" : ""}`}>
-      <button className="close-button" onClick={onClose}>
-        <span className="sr-only">Đóng</span>
-      </button>
-      {book && (
-        <>
-          <h2>{book.title}</h2>
-          <p>{book.description}</p>
-        </>
-      )}
-    </div>
-  );
-};
-
 export default function FavouriteBooks() {
-  const { data, error, isLoading } = useSWR(
-    "https://672752d1302d03037e70a402.mockapi.io/book",
-    fetcher
-  );
+  const {
+    data: books,
+    error,
+    isLoading,
+  } = useSWR("/api/favourites/1", fetcher);
 
   if (error) {
     return (
@@ -47,17 +31,16 @@ export default function FavouriteBooks() {
     );
   }
 
-  const books = data;
-
   return (
     <div className="favourite-books">
-      <div className="container overflow-y-auto">
-        <h1>Sách yêu thích</h1>
-        <div className="grid grid-cols-5 gap-4">
-          {books.map((book, index) => (
-            <div key={index}>
-              <BookCard {...book} />
-            </div>
+      <div className="flex flex-col overflow-y-auto">
+        <h1 className="text-4xl font-bold text-center">
+          Danh sách yêu thích của bạn
+        </h1>
+
+        <div className="grid grid-cols-5 gap-4 mt-10">
+          {books.map((book) => (
+            <BookCard key={book.id} book={book} />
           ))}
         </div>
       </div>

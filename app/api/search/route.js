@@ -47,9 +47,6 @@ export async function GET(req) {
         }
       );
   }
-
-  console.log("Total items: ", response.length);
-
   return new Response(JSON.stringify(response), {
     status: 200,
     headers: {

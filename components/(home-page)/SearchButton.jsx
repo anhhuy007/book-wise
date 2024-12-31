@@ -23,7 +23,7 @@ function SearchButton() {
         </DrawerTrigger>
         <DrawerContent className="flex flex-col items-center">
           <DrawerHeader>
-            <DrawerTitle>Search</DrawerTitle>
+            <DrawerTitle>Tìm kiếm</DrawerTitle>
           </DrawerHeader>
           <SearchBar />
         </DrawerContent>

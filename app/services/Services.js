@@ -8,7 +8,6 @@ export async function getBestSeller() {
         ORDER BY avg_rating DESC
         LIMIT 20
     `;
-
   return response;
 }
 
@@ -28,42 +27,45 @@ export async function getPeopleAlsoViewed() {
         ORDER BY RANDOM()
         LIMIT 20
     `;
-
   return response;
 }
 
 export async function getBookById(id) {
   const response = await sql`
-        SELECT * FROM books
-        WHERE id = ${id}
-    `;
+        SELECT b.*, a.id as author_id
+        FROM books b
+        JOIN authors a ON b.authors = a.name
+        WHERE b.id = ${id}`;
 
   return response;
 }
 
 export async function searchBooksByTitle(title) {
   const response = await sql`
-        SELECT * FROM books
-        WHERE title ILIKE ${`%${title}%`}
-    `;
+        SELECT b.*, a.id as author_id
+        FROM books b
+        JOIN authors a ON b.authors = a.name
+        WHERE b.title ILIKE ${`%${title}%`}`;
 
+  console.log("response: ", response);
   return response;
 }
 
 export async function searchBooksByAuthor(author) {
   const response = await sql`
-        SELECT * FROM books
-        WHERE authors ILIKE ${`%${author}%`}
-    `;
-
+        SELECT b.*, a.id as author_id
+        FROM books b
+        JOIN authors a ON b.authors = a.name
+        WHERE a.name ILIKE ${`%${author}%`}`;
   return response;
 }
 
 export async function searchBooksByCategory(category) {
   const response = await sql`
-        SELECT * FROM books
-        WHERE category ILIKE ${`%${category}%`}
-    `;
+        SELECT b.*, a.id as author_id
+        FROM books b
+        JOIN authors a ON b.authors = a.name
+        WHERE b.category ILIKE ${`%${category}%`}`;
 
   return response;
 }
@@ -117,6 +119,79 @@ export async function getAuthors() {
   const response = await sql`
         SELECT * FROM authors
     `;
+
+  return response;
+}
+
+export async function getUserFavouriteBooks(userId) {
+  // join with books table to get book details
+  const response = await sql`
+    SELECT b.*
+    FROM favourite_books fb
+    JOIN books b ON fb.book_id = b.id
+    WHERE fb.user_id = ${userId}
+  `;
+
+  return response;
+}
+
+export async function addFavouriteBook(userId, bookId) {
+  const response = await sql`
+    INSERT INTO favourite_books (user_id, book_id)
+    VALUES (${userId}, ${bookId})
+    RETURNING *
+  `;
+
+  return response;
+}
+
+export async function getFollowingAuthors(userId) {
+  const response = await sql`
+    SELECT a.*
+    FROM following_authors fa
+    JOIN authors a ON fa.author_id = a.id
+    WHERE fa.user_id = ${userId}
+  `;
+
+  return response;
+}
+
+export async function addBookToFavourites(userId, bookId) {
+  const response = await sql`
+    INSERT INTO favourite_books (user_id, book_id)
+    VALUES (${userId}, ${bookId})
+    RETURNING *
+  `;
+
+  return response;
+}
+
+export async function removeBookFromFavourites(userId, bookId) {
+  const response = await sql`
+    DELETE FROM favourite_books
+    WHERE user_id = ${userId} AND book_id = ${bookId}
+    RETURNING *
+  `;
+
+  return response;
+}
+
+export async function followAuthor(userId, authorId) {
+  const response = await sql`
+    INSERT INTO following_authors (user_id, author_id)
+    VALUES (${userId}, ${authorId})
+    RETURNING *
+  `;
+
+  return response;
+}
+
+export async function unfollowAuthor(userId, authorId) {
+  const response = await sql`
+    DELETE FROM following_authors
+    WHERE user_id = ${userId} AND author_id = ${authorId}
+    RETURNING *
+  `;
 
   return response;
 }

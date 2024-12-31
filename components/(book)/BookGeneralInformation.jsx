@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import Image from "next/image";
 import {
   Star,
@@ -7,10 +7,11 @@ import {
   Heart,
   UserPlus,
   BookmarkPlus,
+  UserMinus,
+  HeartOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import {
   Dialog,
@@ -22,22 +23,144 @@ import {
 import LoadingAnimation from "../ui/loading";
 import toast from "react-hot-toast";
 
-const handleLike = () => {
-  toast.success("Đã thêm vào danh sách yêu thích");
-  setIsLiked((prev) => !prev);
+const handleApiRequest = async (url, method, body = null) => {
+  const options = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (body) options.body = JSON.stringify(body);
+
+  const response = await fetch(url, options);
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(error || "API request failed");
+  }
+  return response.json ? response.json() : null;
 };
 
-const handleAddToFavorite = () => {
-  console.log("Add to favorite");
-  toast.success("Đã thêm vào danh sách yêu thích");
+const handleAddToFavorite = async (bookId, userId) => {
+  try {
+    await handleApiRequest(`/api/favourites/${userId}`, "POST", { bookId });
+    toast.success("Đã thêm vào danh sách yêu thích");
+  } catch (error) {
+    console.error(error);
+    toast.error("Đã xảy ra lỗi khi thêm vào danh sách yêu thích");
+  }
+};
+
+const handleDeleteToFavorite = async (bookId, userId) => {
+  try {
+    await handleApiRequest(`/api/favourites/${userId}`, "DELETE", { bookId });
+    toast.success("Đã xóa khỏi danh sách yêu thích");
+  } catch (error) {
+    console.error(error);
+    toast.error("Đã xảy ra lỗi khi xóa khỏi danh sách yêu thích");
+  }
+};
+
+const handleAddToFollowingAuthors = async (authorId, userId) => {
+  try {
+    await handleApiRequest(`/api/following-authors/${userId}`, "POST", {
+      authorId,
+    });
+    toast.success("Đã theo dõi tác giả");
+  } catch (error) {
+    console.error(error);
+    toast.error("Đã xảy ra lỗi khi theo dõi tác giả");
+  }
+};
+
+const handleDeleteToFollowingAuthors = async (authorId, userId) => {
+  try {
+    await handleApiRequest(`/api/following-authors/${userId}`, "DELETE", {
+      authorId,
+    });
+    toast.success("Đã hủy theo dõi tác giả");
+  } catch (error) {
+    console.error(error);
+    toast.error("Đã xảy ra lỗi khi hủy theo dõi tác giả");
+  }
+};
+
+const checkFavourite = async (bookId, userId) => {
+  console.log(bookId, userId);
+  try {
+    const data = await handleApiRequest(`/api/favourites/${userId}`, "GET");
+    return data.some((book) => book.id === bookId);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const checkFollowingAuthors = async (authorId, userId) => {
+  try {
+    const data = await handleApiRequest(
+      `/api/following-authors/${userId}`,
+      "GET"
+    );
+    return data.some((author) => author.id === authorId);
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+};
+
+const handleFavourite = async (bookId, userId, setIsFavourite, isFavourite) => {
+  try {
+    if (!isFavourite) {
+      await handleAddToFavorite(bookId, userId);
+    } else {
+      await handleDeleteToFavorite(bookId, userId);
+    }
+    setIsFavourite(!isFavourite);
+  } catch (error) {
+    console.error(error);
+    toast.error("Đã xảy ra lỗi, vui lòng thử lại.");
+  }
+};
+
+const handleFollowingAuthors = async (
+  authorId,
+  userId,
+  setIsFollowing,
+  isFollowing
+) => {
+  try {
+    if (!isFollowing) {
+      await handleAddToFollowingAuthors(authorId, userId);
+    } else {
+      await handleDeleteToFollowingAuthors(authorId, userId);
+    }
+    setIsFollowing(!isFollowing);
+  } catch (error) {
+    console.error(error);
+    toast.error("Đã xảy ra lỗi, vui lòng thử lại.");
+  }
 };
 
 function BookGeneralInformation({ bookData }) {
-  const [isLiked, setIsLiked] = useState(false);
-
+  const userId = 1;
   if (!bookData) {
     return <LoadingAnimation />;
   }
+
+  const [isFavourite, setIsFavourite] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    const fetchInitialStates = async () => {
+      const favourite = await checkFavourite(bookData.id, userId);
+      setIsFavourite(favourite);
+
+      const following = await checkFollowingAuthors(bookData.author_id, userId);
+      setIsFollowing(following);
+    };
+
+    fetchInitialStates();
+  }, [bookData.id, bookData.author_id, userId]);
 
   const fullStars = Math.floor(bookData.avg_rating);
   const hasHalfStar = bookData.avg_rating % 1 !== 0;
@@ -73,25 +196,43 @@ function BookGeneralInformation({ bookData }) {
                 </span>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              className="rounded-full"
-              onClick={handleLike}
-            >
-              {isLiked ? (
-                <Heart className="text-red-500 w-12 h-12" />
-              ) : (
-                <Heart className="w-12 h-12" />
-              )}
-            </Button>
           </div>
 
           <div className="space-y-2">
-            <Link href={`/author/${bookData.authors}`}>
-              <h2 className="text-xl font-semibold hover:underline">
-                viết bởi {bookData.authors}
-              </h2>
-            </Link>
+            <div className="flex gap-10 items-center">
+              <Link href={`/author/${bookData.author_id}`}>
+                <h2 className="text-xl font-semibold hover:underline">
+                  viết bởi {bookData.authors}
+                </h2>
+              </Link>
+              {/* Follow button */}
+              <Button
+                size="sm"
+                variant="outline"
+                className="flex items-center gap-2"
+                onClick={() =>
+                  handleFollowingAuthors(
+                    bookData.author_id,
+                    userId,
+                    setIsFollowing,
+                    isFollowing
+                  )
+                }
+              >
+                {isFollowing ? (
+                  <>
+                    <UserMinus className="w-4 h-4" />
+                    Hủy theo dõi
+                  </>
+                ) : (
+                  <>
+                    <UserPlus className="w-4 h-4" />
+                    Theo dõi
+                  </>
+                )}
+              </Button>
+            </div>
+
             <div className="flex items-center space-x-2">
               <span className="text-sm text-muted-foreground">
                 Thể loại: {bookData.category}
@@ -159,15 +300,22 @@ function BookGeneralInformation({ bookData }) {
             <div className="flex items-center space-x-4"></div>
             <div className="flex flex-1 items-center w-full space-x-4">
               <Button size="lg" className="flex-1">
-                Preview <Eye className="w-4 h-4" />
+                Đọc <Eye className="w-4 h-4" />
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="flex-1"
-                onClick={handleAddToFavorite}
+                onClick={() =>
+                  handleFavourite(
+                    bookData.id,
+                    userId,
+                    setIsFavourite,
+                    isFavourite
+                  )
+                }
               >
-                Thêm vào yêu thích
+                {isFavourite ? "Hủy thêm vào yêu thích" : "Thêm vào yêu thích"}
                 <BookmarkPlus className="w-4 h-4" />
               </Button>
             </div>
@@ -181,11 +329,25 @@ function BookGeneralInformation({ bookData }) {
 export default BookGeneralInformation;
 
 export function BookSearchResult({ bookData }) {
+  const userId = 1;
+  const [isFavourite, setIsFavourite] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    const fetchInitialStates = async () => {
+      const favourite = await checkFavourite(bookData.id, userId);
+      setIsFavourite(favourite);
+
+      const following = await checkFollowingAuthors(bookData.author_id, userId);
+      setIsFollowing(following);
+    };
+
+    fetchInitialStates();
+  }, [bookData.id, bookData.author_id, userId]);
+
   const fullStars = Math.floor(bookData.avg_rating);
   const hasHalfStar = bookData.avg_rating % 1 >= 0.5;
   const publishedYear = new Date(bookData.published_year).getFullYear();
-
-  console.log(bookData);
   return (
     <>
       <div className="flex gap-5 md:gap-10">
@@ -264,16 +426,50 @@ export function BookSearchResult({ bookData }) {
             <Button
               variant="outline"
               className="flex items-center gap-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl py-1 sm:py-2 md:py-3 lg:py-4 px-2 sm:px-3 md:px-4 lg:px-5"
+              onClick={() => {
+                handleFollowingAuthors(
+                  bookData.author_id,
+                  userId,
+                  setIsFollowing,
+                  isFollowing
+                );
+              }}
             >
-              <UserPlus className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
-              Theo dõi
+              {isFollowing ? (
+                <>
+                  <UserMinus className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+                  Hủy theo dõi
+                </>
+              ) : (
+                <>
+                  <UserPlus className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+                  Theo dõi
+                </>
+              )}
             </Button>
             <Button
               variant="outline"
               className="flex items-center gap-2 text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl py-1 sm:py-2 md:py-3 lg:py-4 px-2 sm:px-3 md:px-4 lg:px-5"
+              onClick={() => {
+                handleFavourite(
+                  bookData.id,
+                  userId,
+                  setIsFavourite,
+                  isFavourite
+                );
+              }}
             >
-              <Heart className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
-              Yêu thích
+              {isFavourite ? (
+                <>
+                  <HeartOff className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+                  Bỏ yêu thích
+                </>
+              ) : (
+                <>
+                  <Heart className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" />
+                  Yêu thích
+                </>
+              )}
             </Button>
           </div>
         </div>

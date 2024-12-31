@@ -1,7 +1,7 @@
 import React from "react";
 
 function Books() {
-  return <div>Books</div>;
+  return <div>Sách</div>;
 }
 
 export default Books;
