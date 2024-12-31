@@ -70,27 +70,58 @@ export async function searchBooksByCategory(category) {
   return response;
 }
 
-export async function getCategories() {
-  const response = await sql`
-        SELECT * FROM categories
-    `;
+export async function getCategories(page = 1, limit = 8) {
+  const offset = (page - 1) * limit;
 
-  return response;
+  const categories = await sql`
+    SELECT 
+      c.*,
+      COUNT(b.id) as total_books
+    FROM categories c
+    LEFT JOIN books b ON c.name = b.category
+    GROUP BY c.name, c.description, c.view_count
+    ORDER BY total_books DESC
+    LIMIT ${limit} 
+    OFFSET ${offset}
+  `;
+
+  const totalCount = await sql`
+    SELECT COUNT(*) as count FROM categories
+  `;
+
+  return {
+    categories,
+    totalPages: Math.ceil(totalCount[0].count / limit),
+    currentPage: page,
+  };
 }
 
 // app/services/Services.js
-export async function getBooksByCategory(categoryName) {
-  const response = await sql`
+export async function getBooksByCategory(categoryName, page = 1, limit = 12) {
+  const offset = (page - 1) * limit;
+
+  const books = await sql`
     SELECT b.*, c.name as category_name, c.description as category_description 
     FROM books b
     JOIN categories c ON b.category = c.name
     WHERE c.name = ${categoryName}
     ORDER BY b.avg_rating DESC
+    LIMIT ${limit} 
+    OFFSET ${offset}
   `;
 
-  console.log("Books by Category: ", categoryName);
+  const totalCount = await sql`
+    SELECT COUNT(*) as count 
+    FROM books b
+    JOIN categories c ON b.category = c.name
+    WHERE c.name = ${categoryName}
+  `;
 
-  return response;
+  return {
+    books,
+    totalPages: Math.ceil(totalCount[0].count / limit),
+    currentPage: page,
+  };
 }
 
 export async function getBooksByAuthor(authorId) {
@@ -115,12 +146,25 @@ export async function getAuthorById(authorId) {
   return response[0];
 }
 
-export async function getAuthors() {
-  const response = await sql`
-        SELECT * FROM authors
-    `;
+export async function getAuthors(page = 1, limit = 72) {
+  const offset = (page - 1) * limit;
 
-  return response;
+  const authors = await sql`
+    SELECT * FROM authors
+    ORDER BY name
+    LIMIT ${limit} 
+    OFFSET ${offset}
+  `;
+
+  const totalCount = await sql`
+    SELECT COUNT(*) as count FROM authors
+  `;
+
+  return {
+    authors,
+    totalPages: Math.ceil(totalCount[0].count / limit),
+    currentPage: page,
+  };
 }
 
 export async function getUserFavouriteBooks(userId) {

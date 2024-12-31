@@ -8,16 +8,17 @@ import { SideNavProvider } from "@/contexts/SideNavContext";
 import { useSideNav } from "@/contexts/SideNavContext";
 import Footer from "@/components/(home-page)/Footer";
 import { Toaster } from "react-hot-toast";
-import { ChevronsLeft } from "lucide-react";
-import { expandedButton } from "@/components/(home-page)/SideNav";
+import { AuthProvider } from "./context/AuthContext";
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="antialiased bg-background ">
-        <SideNavProvider>
-          <LayoutContent>{children}</LayoutContent>
-        </SideNavProvider>
+        <AuthProvider>
+          <SideNavProvider>
+            <LayoutContent>{children}</LayoutContent>
+          </SideNavProvider>
+        </AuthProvider>
       </body>
     </html>
   );

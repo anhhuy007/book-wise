@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Eye } from "lucide-react";
+import { Book, BookAudioIcon, Eye } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -14,7 +14,7 @@ function getRandomPics() {
   return `https://picsum.photos/id/${id}/1024/576`;
 }
 
-export function CategoriesGrid({ categories }) {
+export function CategoriesGrid({ categories = [] }) {
   return (
     <div className="container mx-auto px-4 py-8">
       <h2 className="text-3xl font-bold mb-6">Các thể loại sách</h2>
@@ -42,7 +42,13 @@ export function CategoriesGrid({ categories }) {
                 <div className="flex items-center text-sm text-gray-500">
                   <Eye className="w-4 h-4 mr-1" />
                   <span>
-                    {(category.view_count || 0).toLocaleString()} lượt xem
+                    {(category.view_count || 0).toLocaleString()} views
+                  </span>
+                </div>
+                <div className="flex items-center text-sm text-gray-500">
+                  <BookAudioIcon className="w-4 h-4 mr-1" />
+                  <span>
+                    {(category.total_books || 0).toLocaleString()} books
                   </span>
                 </div>
               </CardFooter>
