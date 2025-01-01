@@ -9,6 +9,7 @@ import ggLogo from '@/assets/icons/google.webp'
 import fbLogo from '@/assets/icons/facebook.webp'
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { login } from '@/app/services/Services'
 
 // const topics = {
 //   Technology: [
@@ -50,9 +51,14 @@ const SignInPopup = ({ onClose }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Add authentication logic here
+    try {
+        const res = await login(email, password);
+        window.location.href = '/'
+      } catch (error) {
+        console.error('Login failed: ', error);
+      }
     onClose(); // Close the modal after submission
   };
 

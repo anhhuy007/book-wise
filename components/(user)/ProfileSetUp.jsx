@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { HiOutlineAcademicCap, HiOutlineUserCircle, HiOutlineBookOpen, HiOutlineHeart } from 'react-icons/hi' 
+import { HiOutlineAcademicCap, HiOutlineUserCircle, HiOutlineBookOpen, HiOutlineHeart } from 'react-icons/hi'
+import { updateUserProfile } from '@/app/services/Services' 
 
 export default function ProfileSetupForm() {
   const [step, setStep] = useState(1)
@@ -10,7 +11,7 @@ export default function ProfileSetupForm() {
 
   const [formData, setFormData] = useState({
     gender: '',
-    dateOfBirth: '',
+    dob: '',
     school: '',
     faculty: '',
     readingGoal: '',
@@ -56,8 +57,8 @@ export default function ProfileSetupForm() {
                 required
               >
                 <option value="">Chọn giới tính</option>
-                <option value="male">Nam</option>
-                <option value="female">Nữ</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
               </select>
             </div>
             <div>
@@ -65,8 +66,8 @@ export default function ProfileSetupForm() {
               <input 
                 type="date"
                 className="w-full px-4 py-3 rounded-[var(--radius)] bg-background border border-input"
-                value={formData.dateOfBirth}
-                onChange={(e) => setFormData({...formData, dateOfBirth: e.target.value})}
+                value={formData.dob}
+                onChange={(e) => setFormData({...formData, dob: e.target.value})}
                 required
               />
             </div>
@@ -196,7 +197,7 @@ export default function ProfileSetupForm() {
   const isStepValid = () => {
     switch(step) {
       case 1:
-        return formData.gender && formData.dateOfBirth
+        return formData.gender && formData.dob
       case 2:
         return formData.school && formData.faculty
       case 3:
@@ -208,16 +209,31 @@ export default function ProfileSetupForm() {
     }
   }
 
-  const handleNextStep = () => {
+  const handleNextStep = async() => {
     if (step === totalSteps) {
-      console.log(formData)
-      return
+      try {
+        console.log(formData);
+        await updateUserProfile(formData);
+        window.location.href = '/'
+      } catch (error) {
+        console.error('Error updating profile:', error);
+      }
+      return;
     }
     
     if (isStepValid()) {
       setStep(step + 1)
     }
   }
+
+
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
+  })
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-20">
@@ -288,4 +304,3 @@ export default function ProfileSetupForm() {
     </div>
   )
 }
-

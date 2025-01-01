@@ -45,7 +45,6 @@ input[type="text"] {
     width: 100%;
     padding: 8px;
     padding-left: 15px;
-    cursor: not-allowed; /* Show not-allowed cursor */
     border: solid 1px gainsboro;
     border-radius: 7px;
     background-color: white;
