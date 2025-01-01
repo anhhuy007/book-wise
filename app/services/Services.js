@@ -3,7 +3,7 @@
 import { neon } from "@neondatabase/serverless";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { getAuthCookie, setAuthCookie } from "@/app/services/auth";
+import { clearAuthCookie, getAuthCookie, setAuthCookie } from "@/app/services/auth";
 
 const sql = neon(process.env.DATABASE_URL_DEV);
 
@@ -301,7 +301,7 @@ export async function login(email, password) {
   const user = await sql`
     SELECT u.id, u.email, u.password_hash
     FROM users u
-    WHERE u.email = ${email}
+    WHERE u.email = ${email} OR u.username = ${email}
   `;
 
   if (user.length === 0) {
@@ -323,6 +323,16 @@ export async function login(email, password) {
   await setAuthCookie(token);
 
   return { token, user: user[0] };
+}
+
+export async function logout() {
+  try {
+    await clearAuthCookie();
+    return { success: true, message: 'Logged out successfully' };
+  } catch (error) {
+    console.error('Error during logout:', error);
+    throw new Error('Logout failed');
+  }
 }
 
 export async function changePassword(oldPassword, newPassword) {
@@ -348,4 +358,9 @@ export async function changePassword(oldPassword, newPassword) {
   `;
 
   return response;
+}
+
+export async function authorizeUser() {
+  const token = await getAuthCookie();
+  return (token == null);
 }

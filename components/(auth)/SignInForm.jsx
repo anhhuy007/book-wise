@@ -65,13 +65,13 @@ export default function SignInForm() {
             <div>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-foreground mb-2 text-l">Email</label>
+                  <label className="block text-foreground mb-2 text-l">Email/Tên đăng nhập</label>
                   <input
-                    type="email"
+                    type="text"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-3 rounded-[var(--radius)] bg-background border border-input text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition"
-                    placeholder="Địa chỉ email"
+                    placeholder="Địa chỉ email/Tên đăng nhập"
                     required
                   />
                 </div>

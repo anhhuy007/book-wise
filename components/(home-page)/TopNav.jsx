@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import appLogo from "../../assets/icons/logo.png";
 import { useState } from "react";
+import useSWR from 'swr';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,19 +16,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import SearchBar from "@/components/(home-page)/SearchBar";
 import {
-  BellRing,
   User,
   Heart,
   HelpCircle,
-  LogOut,
-  CircleHelp,
-  SearchIcon,
+  LogOut
 } from "lucide-react";
 import React from "react";
 import { usePathname } from "next/navigation";
 import Notification from "@/components/(home-page)/Notification";
 import SearchButton from "@/components/(home-page)/SearchButton";
 import { Separator } from "@/components/ui/separator";
+import { authorizeUser } from "@/app/services/Services";
+
+const userFetcher = async() => {
+    const isUser = await authorizeUser();
+    console.log(isUser);
+    return isUser;
+}
 
 export default function TopNav() {
   const userItems = [
@@ -48,13 +53,15 @@ export default function TopNav() {
     },
     {
       name: "Đăng xuất",
-      link: "/sign-out",
+      link: "/logout",
       icon: <LogOut />,
     },
   ];
 
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+
+  const {data: isUser, error, isLoading} = useSWR('user', userFetcher);
 
   return (
     <div className="w-full bg-background text-foreground sticky top-0">
@@ -80,6 +87,9 @@ export default function TopNav() {
             </div>
             <Notification />
             <Separator orientation="vertical" className="h-10" />
+            {isUser? (
+              <button className="mt-4 bg-black text-white p-2 rounded self-end"><Link href='/signin'>Đăng nhập</Link></button>
+            ) : (
             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
               <DropdownMenuTrigger>
                 <Avatar>
@@ -111,7 +121,7 @@ export default function TopNav() {
                   </React.Fragment>
                 ))}
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu>)}
           </div>
         </div>
       </div>

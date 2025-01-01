@@ -52,7 +52,7 @@ export default function Profile() {
         }
     }, [userData]);
 
-    if (userError || error) return <div>Failed to load data</div>;
+    if (userError || error) return <div>Không thể tải dữ liệu. Vui lòng thử lại sau.</div>;
     if (userLoading || isLoading) return <div>Loading...</div>;
 
     const handleChange = (index) => (event) => {
@@ -68,7 +68,7 @@ export default function Profile() {
 
     return (
         <div className='profile'>
-            <h1>User Profile</h1>
+            <h1>Trang cá nhân</h1>
             <div className="container">
                 <table>
                     <tbody>
@@ -80,7 +80,7 @@ export default function Profile() {
                 <button onClick={handleUpdate} className="mt-4 bg-blue-500 text-white p-2 rounded self-end">Update Profile</button>
                 <div className="d-flex w-full mt-5">
                     <div className='flex justify-between'>
-                        <h1>Favourite books</h1>
+                        <h1>Sách yêu thích</h1>
                         <Link href='/favourite-books' className="mt-3 hover:text-blue-800">More...</Link>
                     </div>
                     <div className="carousel">

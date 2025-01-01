@@ -226,8 +226,6 @@ export default function ProfileSetupForm() {
     }
   }
 
-
-
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {

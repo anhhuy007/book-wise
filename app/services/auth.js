@@ -22,3 +22,17 @@ export async function getAuthCookie() {
     console.log('Error getting auth cookie: ', error)
   }
 }
+
+export async function clearAuthCookie() {
+  try {
+    const cookie = await cookies()
+    cookie.set('auth-token', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      expires: new Date(0)
+    })
+  } catch(error){
+    console.log('Error clearing auth cookie', error);
+  }  
+}
