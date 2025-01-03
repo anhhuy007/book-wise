@@ -1,8 +1,7 @@
-export default function Home() {
-  return (
-    <RootLayout>
-      <h1>Book Wise</h1>
-      <p>Book Wise is a book review site.</p>
-    </RootLayout>
-  )
+import React from "react";
+
+function Home() {
+  return <div>Home</div>;
 }
+
+export default Home;

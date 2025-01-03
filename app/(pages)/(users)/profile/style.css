@@ -1,0 +1,58 @@
+.profile {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    padding: auto;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+tr {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid gainsboro;
+}
+
+td {
+    width: 100%;
+    padding: 15px;
+    vertical-align: middle;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: none;
+}
+
+td:first-child {
+    width: 23%; /* Adjust the width of the label column */
+    font-weight: bold;
+    color: rgb(120, 118, 118);
+    margin-left: 30px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    padding-left: 15px;
+    border: solid 1px gainsboro;
+    border-radius: 7px;
+    background-color: white;
+    color: black;
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px; /* Space between label and icon */
+}
