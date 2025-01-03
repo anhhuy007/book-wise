@@ -6,9 +6,6 @@ import BookGeneralInformation from "@/components/(book)/BookGeneralInformation";
 import { Separator } from "@/components/ui/separator";
 import BookCarousel from "@/components/(home-page)/BookCarousel";
 import LoadingAnimation from "@/components/ui/loading";
-import AboutSection from "@/components/(book)/AboutSection";
-import { useRouter } from "next/router";
-import OpinionSection from "@/components/(book)/OpinionSection";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
