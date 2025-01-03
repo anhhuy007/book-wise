@@ -144,7 +144,11 @@ const handleFollowingAuthors = async (
 function BookGeneralInformation({ bookData }) {
   const userId = 1;
   if (!bookData) {
-    return <LoadingAnimation />;
+    return (
+      <div className="flex items-center justify-center">
+        <LoadingAnimation />
+      </div>
+    );
   }
 
   const [isFavourite, setIsFavourite] = useState(false);

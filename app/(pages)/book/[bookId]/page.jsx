@@ -20,7 +20,11 @@ function BookDetail({ params }) {
     fetcher
   );
 
-  if (isLoading) return <LoadingAnimation />;
+  if (isLoading) return (
+    <div className="flex items-center justify-center h-screen">
+      <LoadingAnimation />
+    </div>
+  )
   if (error) return <div>Error</div>;
 
   const bookData = data[0];

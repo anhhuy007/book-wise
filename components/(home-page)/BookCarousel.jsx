@@ -12,6 +12,14 @@ import BookCard from "./BookCard";
 export function BookCarousel({ book_data = [] }) {
   const books = book_data || [];
 
+  if (books.length === 0) {
+    return (
+      <div className="text-center text-muted-foreground">
+        No books found. Try searching for something else.
+      </div>
+    );
+  }
+
   return (
     <div className="flex w-full justify-center">
       <Carousel className="w-full max-w-[80vw]">

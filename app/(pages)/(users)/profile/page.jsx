@@ -1,29 +1,40 @@
-"use client"
-import React, { useState, useEffect } from 'react';
-import useSWR from 'swr';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from 'next/link';
-import { faUser , faEnvelope, faSchool, faChalkboardTeacher, faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import BookCard from '@/components/(home-page)/BookCard';
-import "./style.css";
-import { getUserProfile } from '@/app/services/Services';
+"use client";
 
-const ProfileField = ({ label, value, icon, onChange }) => (
-    <tr>
-        <td>
-            <FontAwesomeIcon icon={icon} className="icon" />
-            {label}
-        </td>
-        <td>
-            <input type="text" value={value} onChange={onChange} />
-        </td>
-    </tr>
+import "./style.css";
+import React from "react";
+import useSWR from "swr";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
+import {
+  faUser,
+  faEnvelope,
+  faSchool,
+  faChalkboardTeacher,
+  faCalendarAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import BookCard from "@/components/(home-page)/BookCard";
+
+const ProfileField = ({ label, value, icon }) => (
+  <tr>
+    <td>
+      <FontAwesomeIcon icon={icon} className="icon" />
+      {label}
+    </td>
+    <td>
+      <input type="text" value={value} disabled />
+    </td>
+  </tr>
 );
 
 const profileFetcher = async() => {
     const data = await getUserProfile();
     return data;
-}
+};
 
 const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
@@ -32,11 +43,6 @@ export default function Profile() {
         'userProfile',
         profileFetcher
     );
-
-  const { data, error, isLoading } = useSWR(
-    "https://672752d1302d03037e70a402.mockapi.io/book",
-    fetcher
-  );
 
     const [profileData, setProfileData] = useState([]);
 

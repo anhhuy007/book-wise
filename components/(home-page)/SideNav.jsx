@@ -3,7 +3,7 @@
 import {
   BookCheck,
   BookHeart,
-  BookUser,
+  Bot,
   CircleHelp,
   Library,
   Settings,
@@ -25,6 +25,12 @@ const links = [
     name: "Tác giả",
     href: "/author",
     icon: BookCheck,
+    category: "KHÁM PHÁ",
+  },
+  {
+    name: "Tìm với AI",
+    href: "/ai-search",
+    icon: Bot,
     category: "KHÁM PHÁ",
   },
   {
