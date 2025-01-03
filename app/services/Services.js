@@ -8,12 +8,45 @@ import { clearAuthCookie, getAuthCookie, setAuthCookie } from "@/app/services/au
 const sql = neon(process.env.DATABASE_URL_DEV);
 
 export async function getBestSeller() {
-  const response = await sql`
-        SELECT * FROM books
-        ORDER BY avg_rating DESC
-        LIMIT 20
-    `;
-  return response;
+  // const response = await sql`
+  //       SELECT * FROM books
+  //       ORDER BY avg_rating DESC
+  //       LIMIT 20
+  //   `;
+  // return response;
+  const response = await fetch("http://127.0.0.1:8000/popular_books", {
+      method: "GET",
+      headers: {
+          "Content-Type": "application/json",
+      },
+  });
+
+  // get books detail from ids fetch from response
+  const json_response = await response.json();
+  const books = json_response.books;
+  const bookIds = books.map((book) => book.id);
+
+  console.log("IDs: ", bookIds);
+
+  let result = [];
+  for (let i = 0; i < bookIds.length; i++) {
+      const book = await getBookById(bookIds[i]);
+
+      if (!book[0]) {
+          continue;
+      }
+
+      result.push(book[0]);
+  }
+
+  console.log("Best Seller: ", result);
+
+  return new Response(JSON.stringify(result), {
+      status: 200,
+      headers: {
+          'Content-Type': 'application/json',
+      },
+  });
 }
 
 export async function getYouMightLike() {
