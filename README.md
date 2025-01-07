@@ -1,36 +1,27 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# About the Project
 
-## Getting Started
+**Book Wise** is a modern web application designed to help users discover new books tailored to their individual tastes and reading preferences. Built using Next.js and Machine Learning Algorithm, this platform leverages advanced recommendation algorithms and a user-friendly interface to create a seamless browsing experience.
 
-First, run the development server:
+![Bookwise](https://firebasestorage.googleapis.com/v0/b/tiktok-clone-f0b70.appspot.com/o/image%2Fbookwise.jpg?alt=media&token=3365db9b-b7cb-43d4-80bb-14b3d06ae18c)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The system aims to address the challenge of discovering suitable books in a vast and diverse literary landscape. It employs a combination of algorithms, including:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Demographic Filtering:** Recommends books based on aggregated user data, such as popularity and average ratings.
+- **Collaborative Filtering:** Identifies users with similar tastes and suggests books they have enjoyed.
+- **Content-Based Filtering:** Recommends books that share similar themes or genres with the user's previously read or liked books.
+- **Semantic Search:** Leverages Natural Language Processing (NLP) and vector databases to understand the meaning and context of user queries and book descriptions, providing a more refined search experience.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Technologies Used
 
-## Learn More
+![Bookwise Architecture](https://firebasestorage.googleapis.com/v0/b/tiktok-clone-f0b70.appspot.com/o/image%2Fbookwise-architecture.jpg?alt=media&token=c42470c0-f739-403f-9ee3-0c55748ce085)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Python**
+- **Machine Learning Libraries:**
+    - Scikit-learn
+    - Sentence-Transformers: ```all-miniLM-L6-v2```
+    - FAISS (Facebook AI Similarity Search)
+- **API Framework:** FastAPI
+- **Data Storage:** Neon Postgresql
+- **Web Platform:** Nextjs, TailwindCSS
